@@ -9,7 +9,9 @@ template <class T> class vec3
     vec3(vec3 const &other) = default;
     vec3 &operator=(vec3 const &other) = default;
 
+    vec3 operator+(vec3 const &other) const;
     vec3 operator-(vec3 const &other) const;
+    vec3 operator-() const;
 
     T dot(vec3 const &other) const;
     T length() const;

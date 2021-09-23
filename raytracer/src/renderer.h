@@ -1,10 +1,11 @@
 #pragma once
 
 #include <camera.h>
+#include <light.h>
 #include <sphere.h>
 #include <vec3.h>
 
-#include <array>
+#include <vector>
 
 class renderer
 {
@@ -16,6 +17,8 @@ class renderer
     }
 
     void setup_scene();
+    float compute_lighting(vec3<float> const &position, vec3<float> const &normal, vec3<float> const &view_direction,
+                           float specular_intensity);
     vec3<float> const compute_color_from_ray(vec3<float> const &origin, vec3<float> const &direction, float near,
                                              float far);
     vec3<float> const compute_pixel_color(camera const &draw_camera, float u, float v);
@@ -27,5 +30,6 @@ class renderer
     renderer(renderer const &other) = delete;
     renderer &operator=(renderer const &other) = delete;
 
-    std::array<sphere, 3> m_spheres;
+    std::vector<sphere> m_spheres;
+    std::vector<light> m_lights;
 };

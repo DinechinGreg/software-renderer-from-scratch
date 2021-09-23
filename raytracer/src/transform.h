@@ -11,7 +11,7 @@ class transform
     transform(transform const &other) = default;
     transform &operator=(transform const &other) = default;
 
-    virtual vec3<float> const &get_position()
+    virtual vec3<float> const &get_position() const
     {
         return m_position;
     }

@@ -1,5 +1,6 @@
 #include "renderer.h"
 
+#include <light.h>
 #include <sphere.h>
 #include <vec3.h>
 
@@ -10,21 +11,37 @@
 
 void renderer::setup_scene()
 {
-    m_spheres[0] = sphere{vec3{0.0f, -1.0f, 3.0f}, 1.0f, vec3{1.0f, 0.0f, 0.0f}};
-    m_spheres[1] = sphere{vec3{2.0f, 0.0f, 4.0f}, 1.0f, vec3{0.0f, 1.0f, 0.0f}};
-    m_spheres[2] = sphere{vec3{-2.0f, 0.0f, 4.0f}, 1.0f, vec3{0.0f, 0.0f, 1.0f}};
+    m_spheres.push_back(sphere{vec3{0.0f, -1.0f, 3.0f}, 1.0f, vec3{1.0f, 0.0f, 0.0f}, 500.0f});
+    m_spheres.push_back(sphere{vec3{2.0f, 0.0f, 4.0f}, 1.0f, vec3{0.0f, 1.0f, 0.0f}, 500.0f});
+    m_spheres.push_back(sphere{vec3{-2.0f, 0.0f, 4.0f}, 1.0f, vec3{0.0f, 0.0f, 1.0f}, 10.0f});
+
+    m_lights.push_back(light{light_type::ambient, 0.2f});
+    m_lights.push_back(light{light_type::point, 0.6f, vec3{2.0f, 1.0f, 0.0f}});
+    m_lights.push_back(light{light_type::directional, 0.2f, vec3{-1.0f, -4.0f, -4.0f}});
+}
+
+float renderer::compute_lighting(vec3<float> const &position, vec3<float> const &normal,
+                                 vec3<float> const &view_direction, float specular_intensity)
+{
+    float lighting_intensity = 0.0f;
+    for (auto const &l : m_lights)
+    {
+        lighting_intensity += l.apply_lighting(position, normal, view_direction, specular_intensity);
+    }
+    return lighting_intensity;
 }
 
 vec3<float> const renderer::compute_color_from_ray(vec3<float> const &origin, vec3<float> const &direction, float near,
                                                    float far)
 {
+    vec3<float> const &unit_direction = direction.normalize();
     // Check if there is intersection with a sphere
     sphere const *intersected_sphere = nullptr;
     float closest = far;
     for (auto const &s : m_spheres)
     {
         std::vector<float> intersections;
-        if (s.intersects_ray(origin, direction, intersections) && intersections[0] <= closest &&
+        if (s.intersects_ray(origin, unit_direction, intersections) && intersections[0] <= closest &&
             intersections[0] >= near && intersections[0] <= far)
         {
             intersected_sphere = &s;
@@ -33,9 +50,17 @@ vec3<float> const renderer::compute_color_from_ray(vec3<float> const &origin, ve
     }
     // If so, return the sphere's color; otherwise, return the background color
     if (intersected_sphere != nullptr)
-        return intersected_sphere->get_color();
+    {
+        auto const &intersection_position = origin + closest * unit_direction;
+        auto const &intersection_normal = (intersection_position - intersected_sphere->get_position()).normalize();
+        return compute_lighting(intersection_position, intersection_normal, -unit_direction,
+                                intersected_sphere->get_specular_intensity()) *
+               intersected_sphere->get_color();
+    }
     else
+    {
         return vec3{1.0f};
+    }
 }
 
 vec3<float> const renderer::compute_pixel_color(camera const &draw_camera, float u, float v)
@@ -43,7 +68,7 @@ vec3<float> const renderer::compute_pixel_color(camera const &draw_camera, float
     auto const &near = draw_camera.get_near();
     auto const &far = draw_camera.get_far();
     vec3<float> const &ray_origin{0.0f};
-    vec3<float> const &ray_direction = vec3{u, v, near}.normalize();
+    vec3<float> const &ray_direction = vec3{u, v, near};
     return compute_color_from_ray(ray_origin, ray_direction, near, far);
 }
 
