@@ -1,8 +1,7 @@
 #include "light.h"
 
+#include <math/vec.h>
 #include <renderer.h>
-#include <unit_vec3.h>
-#include <vec3.h>
 
 #include <cmath>
 
@@ -11,21 +10,21 @@ light::light()
 {
 }
 
-light::light(light_type type, float intensity, vec3<float> const& position_or_direction, vec3<float> const& color)
+light::light(light_type type, float intensity, vec3f const& position_or_direction, vec3f const& color)
     : transform{position_or_direction}
     , m_type{type}
     , m_intensity{intensity}
     , m_color{color}
-    , m_direction{unit_vec3<float>::zero()}
+    , m_direction{unit_vec3f::zero()}
 {
     if (type == light_type::directional)
     {
-        m_position = vec3<float>::zero();
-        m_direction = unit_vec3{position_or_direction};
+        m_position = vec3f::zero();
+        m_direction = unit_vec3f{position_or_direction};
     }
 }
 
-float light::apply_lighting(vec3<float> const& point_position, unit_vec3<float> const& point_normal, unit_vec3<float> const& view_direction, float const& specular_intensity) const
+float light::apply_lighting(vec3f const& point_position, unit_vec3f const& point_normal, unit_vec3f const& view_direction, float const& specular_intensity) const
 {
     float out_lighting = 0.0f;
     // Apply ambient lighting
@@ -35,7 +34,7 @@ float light::apply_lighting(vec3<float> const& point_position, unit_vec3<float> 
     }
     else
     {
-        unit_vec3<float> l{1.0f};
+        unit_vec3f l{vec3f::zero()};
         float max_intersection_distance{0.0f};
         if (m_type == light_type::point)
         {

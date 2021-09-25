@@ -1,11 +1,10 @@
 #include "sphere.h"
 
-#include <unit_vec3.h>
-#include <vec3.h>
+#include <math/vec.h>
 
 #include <cmath>
 
-sphere::sphere(vec3<float> const& center, float radius, vec3<float> const& color, float const& specular_intensity, float const& reflective_intensity)
+sphere::sphere(vec3f const& center, float radius, vec3f const& color, float const& specular_intensity, float const& reflective_intensity)
     : transform{center}
     , m_radius{radius}
     , m_color{color}
@@ -15,14 +14,14 @@ sphere::sphere(vec3<float> const& center, float radius, vec3<float> const& color
 }
 
 sphere::sphere()
-    : sphere{vec3<float>::zero(), 1.0f, vec3<float>::zero(), -1.0f, -1.0f}
+    : sphere{vec3f::zero(), 1.0f, vec3f::zero(), -1.0f, -1.0f}
 {
 }
 
-bool sphere::intersects_ray(vec3<float> const& origin, unit_vec3<float> const& ray, std::vector<float>& intersections) const
+bool sphere::intersects_ray(vec3f const& origin, unit_vec3f const& ray, std::vector<float>& intersections) const
 {
     intersections.clear();
-    vec3<float> const& center_to_origin = origin - m_position;
+    vec3f const& center_to_origin = origin - m_position;
 
     float a = ray.dot(ray);
     float b = 2 * center_to_origin.dot(ray);

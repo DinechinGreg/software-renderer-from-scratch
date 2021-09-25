@@ -1,11 +1,11 @@
 #include "transform.h"
 
 transform::transform()
-    : transform{vec3<float>::zero()}
+    : transform{vec3f::zero()}
 {
 }
 
-transform::transform(vec3<float> const& position)
+transform::transform(vec3f const& position)
     : m_position{position}
 {
 }
