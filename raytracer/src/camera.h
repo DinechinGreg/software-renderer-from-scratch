@@ -5,8 +5,7 @@
 class camera : public transform
 {
   public:
-    camera() = default;
-    camera(float near, float far, int width, int height);
+    camera(float near = 0.1f, float far = 1000.0f, int width = 256, int height = 256);
     ~camera() = default;
     camera(camera const& other) = default;
     camera& operator=(camera const& other) = default;
@@ -17,8 +16,8 @@ class camera : public transform
     int const& get_height() const { return m_height; }
 
   private:
-    float m_near;
-    float m_far;
-    int m_width;
-    int m_height;
+    float m_near; // Near plane of the camera
+    float m_far;  // Far plane of the camera
+    int m_width;  // Width of the associated framebuffer
+    int m_height; // Height of the associated framebuffer
 };

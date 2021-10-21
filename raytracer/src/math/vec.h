@@ -6,6 +6,9 @@
 #include <limits>
 #include <vector>
 
+namespace math
+{
+
 // Forward declare the unit N-dimensional vector class.
 template <class T, unsigned N> class unit_vec;
 
@@ -120,10 +123,10 @@ template <class T, unsigned N> class vec
      */
     virtual unit_vec<T, N> normalize() const;
 
-    template <unsigned M = N> typename std::enable_if_t<(M > 0), T> x() { return m_components[0]; }
-    template <unsigned M = N> typename std::enable_if_t<(M > 1), T> y() { return m_components[1]; }
-    template <unsigned M = N> typename std::enable_if_t<(M > 2), T> z() { return m_components[2]; }
-    template <unsigned M = N> typename std::enable_if_t<(M > 3), T> w() { return m_components[3]; }
+    template <unsigned M = N> typename std::enable_if_t<(M > 0), T> x() const { return m_components[0]; }
+    template <unsigned M = N> typename std::enable_if_t<(M > 1), T> y() const { return m_components[1]; }
+    template <unsigned M = N> typename std::enable_if_t<(M > 2), T> z() const { return m_components[2]; }
+    template <unsigned M = N> typename std::enable_if_t<(M > 3), T> w() const { return m_components[3]; }
 
   protected:
     std::array<T, N> m_components;
@@ -174,12 +177,14 @@ template <class T, unsigned N> class unit_vec : public vec<T, N>
 
 template <class T, unsigned N> unit_vec<T, N> vec<T, N>::normalize() const { return unit_vec<T, N>{m_components}; }
 
+} // namespace math
+
 /**
  * @brief Three-dimensional vector of floats.
  */
-using vec3f = vec<float, 3u>;
+using vec3f = math::vec<float, 3u>;
 
 /**
  * @brief Unit three-dimensional vector of floats.
  */
-using unit_vec3f = unit_vec<float, 3u>;
+using unit_vec3f = math::unit_vec<float, 3u>;

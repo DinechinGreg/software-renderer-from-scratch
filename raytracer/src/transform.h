@@ -15,5 +15,5 @@ class transform
     virtual void set_position(vec3f const& new_value) { m_position = new_value; }
 
   protected:
-    vec3f m_position;
+    vec3f m_position; // Position of the object
 };

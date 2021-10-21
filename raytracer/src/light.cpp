@@ -1,7 +1,9 @@
 #include "light.h"
 
+#include <math/geometry.h>
+#include <math/math.h>
 #include <math/vec.h>
-#include <renderer.h>
+#include <renderer/renderer.h>
 
 #include <cmath>
 
@@ -24,7 +26,7 @@ light::light(light_type type, float intensity, vec3f const& position_or_directio
     }
 }
 
-float light::apply_lighting(vec3f const& point_position, unit_vec3f const& point_normal, unit_vec3f const& view_direction, float const& specular_intensity) const
+float light::apply_lighting(vec3f const& point_position, float point_distance, unit_vec3f const& point_normal, unit_vec3f const& view_direction, float const& specular_intensity) const
 {
     float out_lighting = 0.0f;
     // Apply ambient lighting
@@ -45,13 +47,12 @@ float light::apply_lighting(vec3f const& point_position, unit_vec3f const& point
         else if (m_type == light_type::directional)
         {
             l = -m_direction;
-            max_intersection_distance = std::numeric_limits<float>::infinity();
+            max_intersection_distance = math::numeric_infinity();
         }
 
         // Check for shadows
-        auto const closest_sphere_intersection = renderer::get_instance().compute_closest_sphere_intersection(point_position, l, std::numeric_limits<float>::epsilon(), max_intersection_distance);
-        if (closest_sphere_intersection.first != nullptr)
-            return 0.0f;
+        if (renderer::get_instance().intersects_any_sphere(point_position, l, math::distance_epsilon(point_distance, 1.0f, 1e-2f), max_intersection_distance))
+            return out_lighting;
 
         // Apply diffuse lighting
         auto const& n_dot_l = point_normal.dot(l);
@@ -63,7 +64,7 @@ float light::apply_lighting(vec3f const& point_position, unit_vec3f const& point
         // Apply specular lighting
         if (specular_intensity != -1)
         {
-            auto const& reflection_direction = renderer::get_instance().reflect_ray(l, point_normal, &n_dot_l).normalize();
+            auto const& reflection_direction = math::compute_reflected_ray(l, point_normal, &n_dot_l).normalize();
             auto const& r_dot_v = reflection_direction.dot(view_direction);
             if (r_dot_v > 0)
             {
