@@ -151,23 +151,17 @@ void renderer_base::compute_pixel_colors_for_next_row()
         auto j = m_last_loaded_row++;
         if (j > m_framebuffer_height)
             return;
-        // Reserve a row of pixel values (color values with 3 floats per pixel)
-        std::vector<float> pixel_row;
-        pixel_row.reserve(3 * static_cast<size_t>(m_framebuffer_height));
-        // Compute values for each pixel in the row, and store them in the reserved row
+        // Compute values for each pixel in the row, and store them in the member storage variable
         for (auto i = 0; i < m_framebuffer_width; i++)
         {
-            auto const& index = 3 * (j * m_framebuffer_width + i);
-            auto const& u = (i * 1.0f / (m_framebuffer_width - 1)) - 0.5f;
-            auto const& v = (j * 1.0f / (m_framebuffer_height - 1)) - 0.5f;
-            auto const& pixel_color = compute_pixel_color(u, v);
-            pixel_row.push_back(pixel_color.x());
-            pixel_row.push_back(pixel_color.y());
-            pixel_row.push_back(pixel_color.z());
+            auto const index = (j * m_framebuffer_width + i);
+            auto const u = (i * 1.0f / (m_framebuffer_width - 1)) - 0.5f;
+            auto const v = (j * 1.0f / (m_framebuffer_height - 1)) - 0.5f;
+            auto const pixel_color = compute_pixel_color(u, v);
+            // Move the computed pixel values into the member storage variable in a thread-safe way
+            m_thread_guard.lock();
+            m_loaded_pixels.insert(std::make_pair(index, pixel_color));
+            m_thread_guard.unlock();
         }
-        // Move the computed row of pixels into the member storage variable in a thread-safe way
-        m_thread_guard.lock();
-        m_loaded_pixels[j] = pixel_row;
-        m_thread_guard.unlock();
     }
 }

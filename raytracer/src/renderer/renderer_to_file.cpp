@@ -24,10 +24,11 @@ void renderer_to_file::draw_scene()
     ofs << "P6\n" << m_framebuffer_width << " " << m_framebuffer_height << "\n255\n";
     for (auto row_it = m_framebuffer_height - 1; row_it >= 0; row_it--)
     {
-        auto const& loaded_pixel_row = m_loaded_pixels[row_it];
-        for (auto& pixel_value : loaded_pixel_row)
+        for (auto column_it = 0; column_it < m_framebuffer_width; column_it++)
         {
-            ofs << static_cast<unsigned char>(std::min(1.0f, pixel_value) * 255);
+            auto const index = (row_it * m_framebuffer_height + column_it);
+            auto const loaded_pixel = m_loaded_pixels.at(index);
+            ofs << static_cast<unsigned char>(std::min(1.0f, loaded_pixel.x()) * 255) << static_cast<unsigned char>(std::min(1.0f, loaded_pixel.y()) * 255) << static_cast<unsigned char>(std::min(1.0f, loaded_pixel.z()) * 255);
         }
     }
     ofs.close();

@@ -110,14 +110,14 @@ class renderer_base
      */
     void launch_pixel_loading_threads();
 
-    camera m_draw_camera;                                        // Camera to use to draw the scene
-    int m_framebuffer_width;                                     // Width of the framebuffer
-    int m_framebuffer_height;                                    // Height of the framebuffer
-    vec3f m_background_color;                                    // Background color of the framebuffer
-    std::vector<sphere> m_spheres;                               // List of spheres that composes the scene's geometry
-    std::vector<light> m_lights;                                 // List of lights that composes the scene's lighting
-    std::vector<std::thread> m_loading_threads;                  // List of threads to use to compute the output colors asynchronously
-    std::mutex m_thread_guard;                                   // Thread guard used to prevent concurrent writing to the stored output values
-    volatile std::atomic<int> m_last_loaded_row;                 // Index of the last row that has been handled by a loading thread
-    std::unordered_map<int, std::vector<float>> m_loaded_pixels; // Maps the index of each loaded row to the pixels that have been loaded for this row
+    camera m_draw_camera;                           // Camera to use to draw the scene
+    int m_framebuffer_width;                        // Width of the framebuffer
+    int m_framebuffer_height;                       // Height of the framebuffer
+    vec3f m_background_color;                       // Background color of the framebuffer
+    std::vector<sphere> m_spheres;                  // List of spheres that composes the scene's geometry
+    std::vector<light> m_lights;                    // List of lights that composes the scene's lighting
+    std::vector<std::thread> m_loading_threads;     // List of threads to use to compute the output colors asynchronously
+    std::mutex m_thread_guard;                      // Thread guard used to prevent concurrent writing to the stored output values
+    volatile std::atomic<int> m_last_loaded_row;    // Index of the last row that has been handled by a loading thread
+    std::unordered_map<int, vec3f> m_loaded_pixels; // Maps each loaded pixel's index in the canvas to its R,G,B values
 };

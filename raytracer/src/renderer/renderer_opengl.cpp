@@ -52,9 +52,14 @@ void renderer_opengl::draw_scene()
     if (m_loaded_pixels.size() > 0)
     {
         glBindTexture(GL_TEXTURE_2D, m_texture_id);
-        for (auto& loaded_pixel_row : m_loaded_pixels)
+        for (auto& pixel : m_loaded_pixels)
         {
-            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, loaded_pixel_row.first, m_framebuffer_width, 1, GL_RGB, GL_FLOAT, loaded_pixel_row.second.data());
+            auto const pixel_index = pixel.first;
+            auto const pixel_rgb = pixel.second;
+            auto const pixel_y = pixel_index / m_framebuffer_width;
+            auto const pixel_x = pixel_index - (pixel_y * m_framebuffer_width);
+            std::vector pixel_rgb_value{pixel_rgb.x(), pixel_rgb.y(), pixel_rgb.z()};
+            glTexSubImage2D(GL_TEXTURE_2D, 0, pixel_x, pixel_y, 1, 1, GL_RGB, GL_FLOAT, pixel_rgb_value.data());
         }
         glBindTexture(GL_TEXTURE_2D, 0);
         m_loaded_pixels.clear();
