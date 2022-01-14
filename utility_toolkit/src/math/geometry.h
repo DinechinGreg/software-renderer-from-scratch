@@ -25,11 +25,11 @@ static Vec3f const compute_reflected_ray(Vec3f const& ray, Unit_Vec3f const& aro
  * @param[in] sphere_position. Position of the center of the sphere.
  * @param[in] sphere_radius. Radius of the sphere.
  * @param[out] intersections. Output intersections within the given range (in order of distance if both are within the range).
- * @param[in] near. (Optional) Near limit, at which to start looking for intersections.
- * @param[in] far. (Optional) Far limit, at which to stop looking for intersections.
+ * @param[in] near_limit. (Optional) Near limit, at which to start looking for intersections.
+ * @param[in] far_limit. (Optional) Far limit, at which to stop looking for intersections.
  * @return True if there was at least one intersection in the given range, false otherwise.
  */
-static bool compute_ray_sphere_intersection(Vec3f const& ray_origin, Unit_Vec3f const& ray_direction, Vec3f const& sphere_position, float sphere_radius, std::vector<float>& intersections, float const* near, float const* far)
+static bool compute_ray_sphere_intersection(Vec3f const& ray_origin, Unit_Vec3f const& ray_direction, Vec3f const& sphere_position, float sphere_radius, std::vector<float>& intersections, float const* near_limit, float const* far_limit)
 {
     // Clear the output vector
     intersections.clear();
@@ -57,12 +57,12 @@ static bool compute_ray_sphere_intersection(Vec3f const& ray_origin, Unit_Vec3f 
     }
 
     // If there is a provided range within which to check for the intersections, verify whether the computed intersections are within the range
-    if (output_bool && near != nullptr && far != nullptr)
+    if (output_bool && near_limit != nullptr && far_limit != nullptr)
     {
-        bool is_in_range = (intersections[0] >= *near && intersections[0] <= *far);
+        bool is_in_range = (intersections[0] >= *near_limit && intersections[0] <= *far_limit);
         if (!is_in_range && intersections.size() > 1)
         {
-            is_in_range = (intersections[1] >= *near && intersections[1] <= *far);
+            is_in_range = (intersections[1] >= *near_limit && intersections[1] <= *far_limit);
             if (is_in_range)
                 std::swap(intersections[0], intersections[1]);
         }

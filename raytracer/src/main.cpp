@@ -1,7 +1,7 @@
 #include <camera.h>
 #include <math/sorting.h>
 #include <math/vec.h>
-#include <renderer/renderer.h>
+#include <graphics/renderer/renderer.h>
 
 int main()
 {
