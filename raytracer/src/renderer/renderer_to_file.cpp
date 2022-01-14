@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 
-void renderer_to_file::initialize(camera const& draw_camera, vec3f const& background_color)
+void renderer_to_file::initialize(camera const& draw_camera, Vec3f const& background_color)
 {
     renderer_base::initialize(draw_camera, background_color);
     m_has_drawn_scene = false;

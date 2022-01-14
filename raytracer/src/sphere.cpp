@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-sphere::sphere(vec3f const& center, float radius, vec3f const& color, float const& specular_intensity, float const& reflective_intensity)
+sphere::sphere(Vec3f const& center, float radius, Vec3f const& color, float const& specular_intensity, float const& reflective_intensity)
     : transform{center}
     , m_radius{radius}
     , m_color{color}
@@ -14,6 +14,6 @@ sphere::sphere(vec3f const& center, float radius, vec3f const& color, float cons
 }
 
 sphere::sphere()
-    : sphere{vec3f::zero(), 1.0f, vec3f::zero(), -1.0f, -1.0f}
+    : sphere{Vec3f::zero(), 1.0f, Vec3f::zero(), -1.0f, -1.0f}
 {
 }

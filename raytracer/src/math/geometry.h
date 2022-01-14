@@ -12,7 +12,7 @@ namespace math
  * @param[in] precomputed_dot. (Optional) Precomputed value of the dot product between incident ray and direction.
  * @return The reflected ray.
  */
-static vec3f const compute_reflected_ray(vec3f const& ray, unit_vec3f const& around, float const* precomputed_dot = nullptr)
+static Vec3f const compute_reflected_ray(Vec3f const& ray, Unit_Vec3f const& around, float const* precomputed_dot = nullptr)
 {
     float dot = (precomputed_dot == nullptr) ? ray.dot(around) : *precomputed_dot;
     return 2.0f * dot * around - ray;
@@ -29,13 +29,13 @@ static vec3f const compute_reflected_ray(vec3f const& ray, unit_vec3f const& aro
  * @param[in] far. (Optional) Far limit, at which to stop looking for intersections.
  * @return True if there was at least one intersection in the given range, false otherwise.
  */
-static bool compute_ray_sphere_intersection(vec3f const& ray_origin, unit_vec3f const& ray_direction, vec3f const& sphere_position, float sphere_radius, std::vector<float>& intersections, float const* near, float const* far)
+static bool compute_ray_sphere_intersection(Vec3f const& ray_origin, Unit_Vec3f const& ray_direction, Vec3f const& sphere_position, float sphere_radius, std::vector<float>& intersections, float const* near, float const* far)
 {
     // Clear the output vector
     intersections.clear();
 
     // Compute the discriminant based on the parametric equations of ray and sphere
-    vec3f const& center_to_origin = ray_origin - sphere_position;
+    Vec3f const& center_to_origin = ray_origin - sphere_position;
     float a = ray_direction.dot(ray_direction);
     float b = 2 * center_to_origin.dot(ray_direction);
     float c = center_to_origin.dot(center_to_origin) - sphere_radius * sphere_radius;

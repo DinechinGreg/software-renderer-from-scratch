@@ -22,7 +22,7 @@ renderer_opengl::renderer_opengl()
 {
 }
 
-void renderer_opengl::initialize(camera const& draw_camera, vec3f const& background_color)
+void renderer_opengl::initialize(camera const& draw_camera, Vec3f const& background_color)
 {
     renderer_base::initialize(draw_camera, background_color);
     initialize_window();

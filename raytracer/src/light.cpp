@@ -12,21 +12,21 @@ light::light()
 {
 }
 
-light::light(light_type type, float intensity, vec3f const& position_or_direction, vec3f const& color)
+light::light(light_type type, float intensity, Vec3f const& position_or_direction, Vec3f const& color)
     : transform{position_or_direction}
     , m_type{type}
     , m_intensity{intensity}
     , m_color{color}
-    , m_direction{unit_vec3f::zero()}
+    , m_direction{Unit_Vec3f::zero()}
 {
     if (type == light_type::directional)
     {
-        m_position = vec3f::zero();
-        m_direction = unit_vec3f{position_or_direction};
+        m_position = Vec3f::zero();
+        m_direction = Unit_Vec3f{position_or_direction};
     }
 }
 
-float light::apply_lighting(vec3f const& point_position, float point_distance, unit_vec3f const& point_normal, unit_vec3f const& view_direction, float const& specular_intensity) const
+float light::apply_lighting(Vec3f const& point_position, float point_distance, Unit_Vec3f const& point_normal, Unit_Vec3f const& view_direction, float const& specular_intensity) const
 {
     float out_lighting = 0.0f;
     // Apply ambient lighting
@@ -36,7 +36,7 @@ float light::apply_lighting(vec3f const& point_position, float point_distance, u
     }
     else
     {
-        unit_vec3f l{vec3f::zero()};
+        Unit_Vec3f l{Vec3f::zero()};
         float max_intersection_distance{0.0f};
         if (m_type == light_type::point)
         {

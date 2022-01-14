@@ -14,7 +14,7 @@ renderer_base::renderer_base()
     : m_draw_camera{}
     , m_framebuffer_width{0}
     , m_framebuffer_height{0}
-    , m_background_color{vec3f::zero()}
+    , m_background_color{Vec3f::zero()}
     , m_spheres{}
     , m_lights{}
     , m_loading_threads{}
@@ -24,7 +24,7 @@ renderer_base::renderer_base()
 {
 }
 
-void renderer_base::initialize(camera const& draw_camera, vec3f const& background_color)
+void renderer_base::initialize(camera const& draw_camera, Vec3f const& background_color)
 {
     m_draw_camera = draw_camera;
     m_background_color = background_color;
@@ -41,17 +41,17 @@ void renderer_base::release()
 
 void renderer_base::setup_scene()
 {
-    m_spheres.push_back(sphere{vec3f{0.0f, -1.0f, 3.0f}, 1.0f, vec3f{1.0f, 0.0f, 0.0f}, 500.0f, 0.2f});
-    m_spheres.push_back(sphere{vec3f{2.0f, 0.0f, 4.0f}, 1.0f, vec3f{0.0f, 1.0f, 0.0f}, 500.0f, 0.3f});
-    m_spheres.push_back(sphere{vec3f{-2.0f, 0.0f, 4.0f}, 1.0f, vec3f{0.0f, 0.0f, 1.0f}, 10.0f, 0.4f});
-    m_spheres.push_back(sphere{vec3f{0.0f, -5001.0f, 0.0f}, 5000.0f, vec3f{1.0f, 1.0f, 0.0f}, 1000.0f, 0.5f});
+    m_spheres.push_back(sphere{Vec3f{0.0f, -1.0f, 3.0f}, 1.0f, Vec3f{1.0f, 0.0f, 0.0f}, 500.0f, 0.2f});
+    m_spheres.push_back(sphere{Vec3f{2.0f, 0.0f, 4.0f}, 1.0f, Vec3f{0.0f, 1.0f, 0.0f}, 500.0f, 0.3f});
+    m_spheres.push_back(sphere{Vec3f{-2.0f, 0.0f, 4.0f}, 1.0f, Vec3f{0.0f, 0.0f, 1.0f}, 10.0f, 0.4f});
+    m_spheres.push_back(sphere{Vec3f{0.0f, -5001.0f, 0.0f}, 5000.0f, Vec3f{1.0f, 1.0f, 0.0f}, 1000.0f, 0.5f});
 
     m_lights.push_back(light{light_type::ambient, 0.2f});
-    m_lights.push_back(light{light_type::point, 0.6f, vec3f{2.0f, 1.0f, 0.0f}});
-    m_lights.push_back(light{light_type::directional, 0.2f, vec3f{-1.0f, -4.0f, -4.0f}});
+    m_lights.push_back(light{light_type::point, 0.6f, Vec3f{2.0f, 1.0f, 0.0f}});
+    m_lights.push_back(light{light_type::directional, 0.2f, Vec3f{-1.0f, -4.0f, -4.0f}});
 }
 
-float renderer_base::compute_lighting(vec3f const& position, float distance, unit_vec3f const& normal, unit_vec3f const& view_direction, float specular_intensity) const
+float renderer_base::compute_lighting(Vec3f const& position, float distance, Unit_Vec3f const& normal, Unit_Vec3f const& view_direction, float specular_intensity) const
 {
     float lighting_intensity = 0.0f;
     for (auto const& l : m_lights)
@@ -61,7 +61,7 @@ float renderer_base::compute_lighting(vec3f const& position, float distance, uni
     return lighting_intensity;
 }
 
-std::pair<sphere const*, float> renderer_base::compute_closest_sphere_intersection(vec3f const& origin, unit_vec3f const& direction, float near, float far) const
+std::pair<sphere const*, float> renderer_base::compute_closest_sphere_intersection(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far) const
 {
     sphere const* intersected_sphere = nullptr;
     float closest_intersection = far;
@@ -77,7 +77,7 @@ std::pair<sphere const*, float> renderer_base::compute_closest_sphere_intersecti
     return {intersected_sphere, closest_intersection};
 }
 
-bool renderer_base::intersects_any_sphere(vec3f const& origin, unit_vec3f const& direction, float near, float far, sphere const* first_sphere_to_check) const
+bool renderer_base::intersects_any_sphere(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far, sphere const* first_sphere_to_check) const
 {
     std::vector<float> intersections;
     if (first_sphere_to_check != nullptr && math::compute_ray_sphere_intersection(origin, direction, first_sphere_to_check->get_position(), first_sphere_to_check->get_radius(), intersections, &near, &far))
@@ -92,7 +92,7 @@ bool renderer_base::intersects_any_sphere(vec3f const& origin, unit_vec3f const&
     return false;
 }
 
-vec3f const renderer_base::compute_color_from_ray(vec3f const& origin, unit_vec3f const& direction, float near, float far, float recursion_depth) const
+Vec3f const renderer_base::compute_color_from_ray(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far, float recursion_depth) const
 {
     auto const closest_sphere_intersection = compute_closest_sphere_intersection(origin, direction, near, far);
     auto const* intersected_sphere = closest_sphere_intersection.first;
@@ -123,12 +123,12 @@ vec3f const renderer_base::compute_color_from_ray(vec3f const& origin, unit_vec3
     }
 }
 
-vec3f const renderer_base::compute_pixel_color(float u, float v) const
+Vec3f const renderer_base::compute_pixel_color(float u, float v) const
 {
     auto const& near = m_draw_camera.get_near();
     auto const& far = m_draw_camera.get_far();
-    vec3f const& ray_origin{vec3f::zero()};
-    unit_vec3f const& ray_direction = vec3f{u, v, near}.normalize();
+    Vec3f const& ray_origin{Vec3f::zero()};
+    Unit_Vec3f const& ray_direction = Vec3f{u, v, near}.normalize();
     auto const recursion_max_depth = 1;
     return compute_color_from_ray(ray_origin, ray_direction, near, far, recursion_max_depth);
 }

@@ -19,7 +19,7 @@ class renderer_opengl : public renderer_base
         return global_renderer;
     }
 
-    void initialize(camera const& draw_camera, vec3f const& background_color) override;
+    void initialize(camera const& draw_camera, Vec3f const& background_color) override;
     bool should_continue_render_loop() const override;
     void draw_scene() override;
     void release() override;

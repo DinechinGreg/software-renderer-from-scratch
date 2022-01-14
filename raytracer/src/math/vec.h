@@ -10,80 +10,82 @@ namespace math
 {
 
 // Forward declare the unit N-dimensional vector class.
-template <class T, unsigned N> class unit_vec;
+template <class T, unsigned N> class Unit_Vec;
 
 /**
  * @brief Defines a N-dimensional vector (2 <= N <= 4).
  * @tparam T. Numeric type of the vector.
  */
-template <class T, unsigned N> class vec
+template <class T, unsigned N> class Vec
 {
   public:
-    virtual ~vec() = default;
-    vec(vec const& other) = default;
-    vec& operator=(vec const& other) = default;
+    virtual ~Vec() = default;
+    Vec(Vec const& other) = default;
+    Vec& operator=(Vec const& other) = default;
 
-    vec(std::array<T, N> const& components)
+    Vec(std::array<T, N> const& components)
         : m_components{components}
     {
     }
 
     template <unsigned M = N>
-    vec(T const& x, typename std::enable_if_t<(M == 2), T> const& y)
-        : vec{{x, y}}
+    Vec(T const& x, typename std::enable_if_t<(M == 2), T> const& y)
+        : Vec{{x, y}}
     {
     }
     template <unsigned M = N>
-    vec(typename std::enable_if_t<(M == 2), T> const& all)
-        : vec{{all, all}}
+    Vec(typename std::enable_if_t<(M == 2), T> const& all)
+        : Vec{{all, all}}
     {
     }
 
     template <unsigned M = N>
-    vec(T const& x, T const& y, typename std::enable_if_t<(M == 3), T> const& z)
-        : vec{{x, y, z}}
+    Vec(T const& x, T const& y, typename std::enable_if_t<(M == 3), T> const& z)
+        : Vec{{x, y, z}}
     {
     }
     template <unsigned M = N>
-    vec(typename std::enable_if_t<(M == 3), T> const& all)
-        : vec{{all, all, all}}
+    Vec(typename std::enable_if_t<(M == 3), T> const& all)
+        : Vec{{all, all, all}}
     {
     }
 
     template <unsigned M = N>
-    vec(T const& x, T const& y, T const& z, typename std::enable_if_t<(M == 4), T> const& w)
-        : vec{{x, y, z, w}}
+    Vec(T const& x, T const& y, T const& z, typename std::enable_if_t<(M == 4), T> const& w)
+        : Vec{{x, y, z, w}}
     {
     }
     template <unsigned M = N>
-    vec(typename std::enable_if_t<(M == 4), T> const& all)
-        : vec{{all, all, all, all}}
+    Vec(typename std::enable_if_t<(M == 4), T> const& all)
+        : Vec{{all, all, all, all}}
     {
     }
 
-    vec operator+(vec const& other) const
+    Vec operator+(Vec const& other) const
     {
         std::array<T, N> components;
         for (auto it = 0u; it < N; it++)
             components[it] = m_components[it] + other.m_components[it];
-        return vec{components};
+        return Vec{components};
     }
-    vec operator*(T const& scalar) const
+    Vec operator*(T const& scalar) const
     {
         std::array<T, N> components;
         for (auto it = 0u; it < N; it++)
             components[it] = scalar * m_components[it];
-        return vec{components};
+        return Vec{components};
     }
-    vec operator-(vec const& other) const { return operator+(-other); }
-    vec operator-() const { return (*this) * static_cast<T>(-1); }
+    Vec operator-(Vec const& other) const { return operator+(-other); }
+    Vec operator-() const { return (*this) * static_cast<T>(-1); }
+    void operator+=(Vec const& other) { *this = *this + other; }
+    T operator[](unsigned int i) const { return m_components[i]; }
 
     /**
      * @brief Computes the dot product between this vector and another.
      * @param other. The other vector with which to compute the dot product.
      * @return The dot product (a scalar value).
      */
-    T dot(vec const& other) const
+    T dot(Vec const& other) const
     {
         T sum = 0;
         for (auto it = 0u; it < N; it++)
@@ -95,9 +97,9 @@ template <class T, unsigned N> class vec
      * @brief Gets a vector with all components equal to zero.
      * @return The zero vector.
      */
-    static vec const& zero()
+    static Vec const& zero()
     {
-        static vec o{0};
+        static Vec o{0};
         return o;
     }
 
@@ -105,9 +107,9 @@ template <class T, unsigned N> class vec
      * @brief Gets a vector with all components equal to one.
      * @return The one vector.
      */
-    static vec const& one()
+    static Vec const& one()
     {
-        static vec i{1};
+        static Vec i{1};
         return i;
     }
 
@@ -121,7 +123,7 @@ template <class T, unsigned N> class vec
      * @brief Computes a normalized version of this vector.
      * @return The normalized vector (a unit vector).
      */
-    virtual unit_vec<T, N> normalize() const;
+    virtual Unit_Vec<T, N> normalize() const;
 
     template <unsigned M = N> typename std::enable_if_t<(M > 0), T> x() const { return m_components[0]; }
     template <unsigned M = N> typename std::enable_if_t<(M > 1), T> y() const { return m_components[1]; }
@@ -132,23 +134,23 @@ template <class T, unsigned N> class vec
     std::array<T, N> m_components;
 };
 
-template <class T, unsigned N> vec<T, N> operator*(T const& scalar, vec<T, N> const& v) { return v * scalar; }
+template <class T, unsigned N> Vec<T, N> operator*(T const& scalar, Vec<T, N> const& v) { return v * scalar; }
 
 /**
  * @brief Defines a unit N-dimensional vector.
  * @tparam T. Numeric type of the vector.
  */
-template <class T, unsigned N> class unit_vec : public vec<T, N>
+template <class T, unsigned N> class Unit_Vec : public Vec<T, N>
 {
   public:
-    ~unit_vec() = default;
-    unit_vec(unit_vec const& other) = default;
-    unit_vec& operator=(unit_vec const& other) = default;
+    ~Unit_Vec() = default;
+    Unit_Vec(Unit_Vec const& other) = default;
+    Unit_Vec& operator=(Unit_Vec const& other) = default;
 
-    unit_vec(std::array<T, N> const& components)
-        : vec<T, N>{components}
+    Unit_Vec(std::array<T, N> const& components)
+        : Vec<T, N>{components}
     {
-        T l = vec<T, N>::length();
+        T l = Vec<T, N>::length();
         if ((std::abs(l - 1.0f) > std::numeric_limits<T>::epsilon()) && (l > std::numeric_limits<T>::epsilon()))
         {
             T const& one_on_length = (1.0f / l);
@@ -157,8 +159,8 @@ template <class T, unsigned N> class unit_vec : public vec<T, N>
         }
     }
 
-    unit_vec(vec<T, N> const& other)
-        : unit_vec{other.normalize()}
+    Unit_Vec(Vec<T, N> const& other)
+        : Unit_Vec{other.normalize()}
     {
     }
 
@@ -172,19 +174,24 @@ template <class T, unsigned N> class unit_vec : public vec<T, N>
      * @brief Returns the normalized version of this unit vector, i.e. itself.
      * @return The unit vector itself.
      */
-    unit_vec normalize() const override { return (*this); }
+    Unit_Vec normalize() const override { return (*this); }
 };
 
-template <class T, unsigned N> unit_vec<T, N> vec<T, N>::normalize() const { return unit_vec<T, N>{m_components}; }
+template <class T, unsigned N> Unit_Vec<T, N> Vec<T, N>::normalize() const { return Unit_Vec<T, N>{m_components}; }
 
 } // namespace math
 
 /**
+ * @brief Two-dimensional vector of unsigned integers.
+ */
+using Vec2u = math::Vec<unsigned int, 2u>;
+
+/**
  * @brief Three-dimensional vector of floats.
  */
-using vec3f = math::vec<float, 3u>;
+using Vec3f = math::Vec<float, 3u>;
 
 /**
  * @brief Unit three-dimensional vector of floats.
  */
-using unit_vec3f = math::unit_vec<float, 3u>;
+using Unit_Vec3f = math::Unit_Vec<float, 3u>;
