@@ -2,13 +2,13 @@
 
 #include <transform.h>
 
-class camera : public transform
+class Camera : public Transform
 {
   public:
-    camera(float near = 0.1f, float far = 1000.0f, int width = 256, int height = 256);
-    ~camera() = default;
-    camera(camera const& other) = default;
-    camera& operator=(camera const& other) = default;
+    Camera(float near = 0.1f, float far = 1000.0f, int width = 256, int height = 256);
+    ~Camera() = default;
+    Camera(Camera const& other) = default;
+    Camera& operator=(Camera const& other) = default;
 
     float const& get_near() const { return m_near; }
     float const& get_far() const { return m_far; }

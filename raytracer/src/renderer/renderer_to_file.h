@@ -10,12 +10,12 @@
 
 #include <vector>
 
-class renderer_to_file : public renderer_base
+class Renderer_To_File : public Renderer_Base
 {
   public:
-    static renderer_to_file& get_instance()
+    static Renderer_To_File& get_instance()
     {
-        static renderer_to_file global_renderer;
+        static Renderer_To_File global_renderer;
         return global_renderer;
     }
 

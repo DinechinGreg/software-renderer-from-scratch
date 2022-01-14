@@ -10,16 +10,16 @@
 
 struct GLFWwindow;
 
-class renderer_opengl : public renderer_base
+class Renderer_OpenGL : public Renderer_Base
 {
   public:
-    static renderer_opengl& get_instance()
+    static Renderer_OpenGL& get_instance()
     {
-        static renderer_opengl global_renderer;
+        static Renderer_OpenGL global_renderer;
         return global_renderer;
     }
 
-    void initialize(camera const& draw_camera, Vec3f const& background_color) override;
+    void initialize(Camera const& draw_camera, Vec3f const& background_color) override;
     bool should_continue_render_loop() const override;
     void draw_scene() override;
     void release() override;
@@ -34,7 +34,7 @@ class renderer_opengl : public renderer_base
     void change_framebuffer_size(GLFWwindow* window, int width, int height);
 
   private:
-    renderer_opengl();
+    Renderer_OpenGL();
 
     /**
      * @brief Initializes a GLFWwindow in which to display the application.

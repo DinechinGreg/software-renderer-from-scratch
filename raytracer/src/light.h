@@ -3,23 +3,23 @@
 #include <math/vec.h>
 #include <transform.h>
 
-enum class light_type
+enum class Light_Type
 {
     ambient,
     directional,
     point
 };
 
-class light : public transform
+class Light : public Transform
 {
   public:
-    light();
-    light(light_type type, float intensity, Vec3f const& position_or_direction = Vec3f::zero(), Vec3f const& color = Vec3f::one());
-    ~light() = default;
-    light(light const& other) = default;
-    light& operator=(light const& other) = default;
+    Light();
+    Light(Light_Type type, float intensity, Vec3f const& position_or_direction = Vec3f::zero(), Vec3f const& color = Vec3f::one());
+    ~Light() = default;
+    Light(Light const& other) = default;
+    Light& operator=(Light const& other) = default;
 
-    light_type const& get_type() const { return m_type; }
+    Light_Type const& get_type() const { return m_type; }
     float const& get_intensity() const { return m_intensity; }
     Vec3f const& get_direction() const { return m_direction; }
 
@@ -35,7 +35,7 @@ class light : public transform
     float apply_lighting(Vec3f const& point_position, float point_distance, Unit_Vec3f const& point_normal, Unit_Vec3f const& view_direction, float const& specular_intensity) const;
 
   protected:
-    light_type m_type;      // Type of light (ambient, directional, point)
+    Light_Type m_type;      // Type of light (ambient, directional, point)
     float m_intensity;      // Intensity of the light
     Vec3f m_color;          // Color of the light
     Unit_Vec3f m_direction; // Direction of the light (for directional lights)

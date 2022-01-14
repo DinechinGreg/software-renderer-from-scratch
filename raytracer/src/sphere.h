@@ -6,14 +6,14 @@
 #include <limits>
 #include <vector>
 
-class sphere : public transform
+class Sphere : public Transform
 {
   public:
-    sphere();
-    sphere(Vec3f const& center, float radius, Vec3f const& color, float const& specular_intensity, float const& reflective_intensity);
-    ~sphere() = default;
-    sphere(sphere const& other) = default;
-    sphere& operator=(sphere const& other) = default;
+    Sphere();
+    Sphere(Vec3f const& center, float radius, Vec3f const& color, float const& specular_intensity, float const& reflective_intensity);
+    ~Sphere() = default;
+    Sphere(Sphere const& other) = default;
+    Sphere& operator=(Sphere const& other) = default;
 
     float get_radius() const { return m_radius; }
     Vec3f const& get_color() const { return m_color; }

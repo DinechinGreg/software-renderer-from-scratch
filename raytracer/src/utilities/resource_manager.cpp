@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-std::string resource_manager::read_file(std::string const& filepath)
+std::string Resource_Manager::read_file(std::string const& filepath)
 {
     std::string contents;
     std::ifstream file(filepath);

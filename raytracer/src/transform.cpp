@@ -1,13 +1,13 @@
 #include "transform.h"
 
-transform::transform()
-    : transform{Vec3f::zero()}
+Transform::Transform()
+    : Transform{Vec3f::zero()}
 {
 }
 
-transform::transform(Vec3f const& position)
+Transform::Transform(Vec3f const& position)
     : m_position{position}
 {
 }
 
-transform::~transform() {}
+Transform::~Transform() {}

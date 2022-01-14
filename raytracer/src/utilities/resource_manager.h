@@ -2,12 +2,12 @@
 
 #include <string>
 
-class resource_manager
+class Resource_Manager
 {
   public:
-    static resource_manager& get_instance()
+    static Resource_Manager& get_instance()
     {
-        static resource_manager global_resource_manager{};
+        static Resource_Manager global_resource_manager{};
         return global_resource_manager;
     }
 

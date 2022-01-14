@@ -7,30 +7,30 @@
 
 #include <cmath>
 
-light::light()
-    : light{light_type::ambient, 0.0f}
+Light::Light()
+    : Light{Light_Type::ambient, 0.0f}
 {
 }
 
-light::light(light_type type, float intensity, Vec3f const& position_or_direction, Vec3f const& color)
-    : transform{position_or_direction}
+Light::Light(Light_Type type, float intensity, Vec3f const& position_or_direction, Vec3f const& color)
+    : Transform{position_or_direction}
     , m_type{type}
     , m_intensity{intensity}
     , m_color{color}
     , m_direction{Unit_Vec3f::zero()}
 {
-    if (type == light_type::directional)
+    if (type == Light_Type::directional)
     {
         m_position = Vec3f::zero();
         m_direction = Unit_Vec3f{position_or_direction};
     }
 }
 
-float light::apply_lighting(Vec3f const& point_position, float point_distance, Unit_Vec3f const& point_normal, Unit_Vec3f const& view_direction, float const& specular_intensity) const
+float Light::apply_lighting(Vec3f const& point_position, float point_distance, Unit_Vec3f const& point_normal, Unit_Vec3f const& view_direction, float const& specular_intensity) const
 {
     float out_lighting = 0.0f;
     // Apply ambient lighting
-    if (m_type == light_type::ambient)
+    if (m_type == Light_Type::ambient)
     {
         out_lighting += m_intensity;
     }
@@ -38,20 +38,20 @@ float light::apply_lighting(Vec3f const& point_position, float point_distance, U
     {
         Unit_Vec3f l{Vec3f::zero()};
         float max_intersection_distance{0.0f};
-        if (m_type == light_type::point)
+        if (m_type == Light_Type::point)
         {
             auto const point_to_light = (m_position - point_position);
             l = point_to_light.normalize();
             max_intersection_distance = point_to_light.length();
         }
-        else if (m_type == light_type::directional)
+        else if (m_type == Light_Type::directional)
         {
             l = -m_direction;
             max_intersection_distance = math::numeric_infinity();
         }
 
         // Check for shadows
-        if (renderer::get_instance().intersects_any_sphere(point_position, l, math::distance_epsilon(point_distance, 1.0f, 1e-2f), max_intersection_distance))
+        if (Renderer::get_instance().intersects_any_sphere(point_position, l, math::distance_epsilon(point_distance, 1.0f, 1e-2f), max_intersection_distance))
             return out_lighting;
 
         // Apply diffuse lighting

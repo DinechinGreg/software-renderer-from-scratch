@@ -2,14 +2,14 @@
 
 #include <math/vec.h>
 
-class transform
+class Transform
 {
   public:
-    transform();
-    transform(Vec3f const& position);
-    virtual ~transform() = 0;
-    transform(transform const& other) = default;
-    transform& operator=(transform const& other) = default;
+    Transform();
+    Transform(Vec3f const& position);
+    virtual ~Transform() = 0;
+    Transform(Transform const& other) = default;
+    Transform& operator=(Transform const& other) = default;
 
     virtual Vec3f const& get_position() const { return m_position; }
     virtual void set_position(Vec3f const& new_value) { m_position = new_value; }

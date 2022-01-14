@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
-class renderer_base
+class Renderer_Base
 {
   public:
     /**
@@ -19,7 +19,7 @@ class renderer_base
      * @param[in] draw_camera. The camera to use to render the scene.
      * @param[in] background_color. The background color to use for the scene.
      */
-    virtual void initialize(camera const& draw_camera = camera{}, Vec3f const& background_color = Vec3f::zero());
+    virtual void initialize(Camera const& draw_camera = Camera{}, Vec3f const& background_color = Vec3f::zero());
 
     /**
      * @brief Checks whether the render loop should continue.
@@ -56,7 +56,7 @@ class renderer_base
      * @param[in] far. Far intersection distance, at which to stop looking for intersections.
      * @return A pair of values, containing a pointer to the intersected element and the distance separating the intersection from the ray's origin.
      */
-    std::pair<sphere const*, float> compute_closest_sphere_intersection(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far) const;
+    std::pair<Sphere const*, float> compute_closest_sphere_intersection(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far) const;
 
     /**
      * @brief Checks whether the given ray intersects any element of the scene's geometry.
@@ -67,7 +67,7 @@ class renderer_base
      * @param[in] first_sphere_to_check. (Optional) Element of geometry which is expected to intersect with the ray, to check first.
      * @return True if the ray intersects with an element, false otherwise.
      */
-    bool intersects_any_sphere(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far, sphere const* first_sphere_to_check = nullptr) const;
+    bool intersects_any_sphere(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far, Sphere const* first_sphere_to_check = nullptr) const;
 
     /**
      * @brief Computes the color obtained by intersecting the given ray with the scene's geometry.
@@ -89,10 +89,10 @@ class renderer_base
     Vec3f const compute_pixel_color(float u, float v) const;
 
   protected:
-    renderer_base();
-    virtual ~renderer_base() = default;
-    renderer_base(renderer_base const& other) = delete;
-    renderer_base& operator=(renderer_base const& other) = delete;
+    Renderer_Base();
+    virtual ~Renderer_Base() = default;
+    Renderer_Base(Renderer_Base const& other) = delete;
+    Renderer_Base& operator=(Renderer_Base const& other) = delete;
 
     /**
      * @brief Sets up lights and geometry in the scene.
@@ -110,12 +110,12 @@ class renderer_base
      */
     void launch_pixel_loading_threads();
 
-    camera m_draw_camera;                           // Camera to use to draw the scene
+    Camera m_draw_camera;                           // Camera to use to draw the scene
     int m_framebuffer_width;                        // Width of the framebuffer
     int m_framebuffer_height;                       // Height of the framebuffer
     Vec3f m_background_color;                       // Background color of the framebuffer
-    std::vector<sphere> m_spheres;                  // List of spheres that composes the scene's geometry
-    std::vector<light> m_lights;                    // List of lights that composes the scene's lighting
+    std::vector<Sphere> m_spheres;                  // List of spheres that composes the scene's geometry
+    std::vector<Light> m_lights;                    // List of lights that composes the scene's lighting
     std::vector<std::thread> m_loading_threads;     // List of threads to use to compute the output colors asynchronously
     std::mutex m_thread_guard;                      // Thread guard used to prevent concurrent writing to the stored output values
     volatile std::atomic<int> m_last_loaded_row;    // Index of the last row that has been handled by a loading thread

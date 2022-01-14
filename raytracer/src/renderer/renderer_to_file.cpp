@@ -5,15 +5,15 @@
 #include <fstream>
 #include <vector>
 
-void renderer_to_file::initialize(camera const& draw_camera, Vec3f const& background_color)
+void Renderer_To_File::initialize(camera const& draw_camera, Vec3f const& background_color)
 {
-    renderer_base::initialize(draw_camera, background_color);
+    Renderer_Base::initialize(draw_camera, background_color);
     m_has_drawn_scene = false;
 }
 
-bool renderer_to_file::should_continue_render_loop() const { return !m_has_drawn_scene; }
+bool Renderer_To_File::should_continue_render_loop() const { return !m_has_drawn_scene; }
 
-void renderer_to_file::draw_scene()
+void Renderer_To_File::draw_scene()
 {
     // Launch the threads and wait for them to finish processing
     launch_pixel_loading_threads();
@@ -36,6 +36,6 @@ void renderer_to_file::draw_scene()
     m_has_drawn_scene = true;
 }
 
-void renderer_to_file::release() {}
+void Renderer_To_File::release() {}
 
 #endif

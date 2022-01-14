@@ -1,7 +1,7 @@
 #include "camera.h"
 
-camera::camera(float near, float far, int width, int height)
-    : transform{}
+Camera::Camera(float near, float far, int width, int height)
+    : Transform{}
     , m_near{near}
     , m_far{far}
     , m_width{width}

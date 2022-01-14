@@ -6,12 +6,12 @@
 
 #include <string>
 
-class shader_manager_opengl
+class Shader_Manager_OpenGL
 {
   public:
-    static shader_manager_opengl& get_instance()
+    static Shader_Manager_OpenGL& get_instance()
     {
-        static shader_manager_opengl global_shader_manager{};
+        static Shader_Manager_OpenGL global_shader_manager{};
         return global_shader_manager;
     }
 

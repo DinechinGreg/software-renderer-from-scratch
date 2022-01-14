@@ -12,10 +12,10 @@
 static auto constexpr log_size = 512;
 #endif
 
-unsigned int shader_manager_opengl::compile_shader(unsigned int type, std::string const& filepath) const
+unsigned int Shader_Manager_OpenGL::compile_shader(unsigned int type, std::string const& filepath) const
 {
     // Get the shader source from the filepath
-    auto const& shader_source_string{resource_manager::get_instance().read_file(filepath)};
+    auto const& shader_source_string{Resource_Manager::get_instance().read_file(filepath)};
     char const* const shader_source{shader_source_string.data()};
     // Create and compile the shader
     auto const& shader = glCreateShader(type);
@@ -36,7 +36,7 @@ unsigned int shader_manager_opengl::compile_shader(unsigned int type, std::strin
     return shader;
 }
 
-unsigned int shader_manager_opengl::create_program(std::string const& filepath) const
+unsigned int Shader_Manager_OpenGL::create_program(std::string const& filepath) const
 {
     // Compile the vertex and fragment shaders
     auto const& vertex_shader = compile_shader(GL_VERTEX_SHADER, filepath + ".vtx");

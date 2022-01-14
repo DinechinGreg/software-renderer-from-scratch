@@ -11,8 +11,8 @@
 #include <mutex>
 #include <thread>
 
-renderer_opengl::renderer_opengl()
-    : renderer_base()
+Renderer_OpenGL::Renderer_OpenGL()
+    : Renderer_Base()
     , m_window{nullptr}
     , m_vao_id{0}
     , m_vbo_id{0}
@@ -22,17 +22,17 @@ renderer_opengl::renderer_opengl()
 {
 }
 
-void renderer_opengl::initialize(camera const& draw_camera, Vec3f const& background_color)
+void Renderer_OpenGL::initialize(Camera const& draw_camera, Vec3f const& background_color)
 {
-    renderer_base::initialize(draw_camera, background_color);
+    Renderer_Base::initialize(draw_camera, background_color);
     initialize_window();
     initialize_fullscreen_quad_rendering();
     launch_pixel_loading_threads();
 }
 
-bool renderer_opengl::should_continue_render_loop() const { return (m_window == nullptr || !glfwWindowShouldClose(m_window)); }
+bool Renderer_OpenGL::should_continue_render_loop() const { return (m_window == nullptr || !glfwWindowShouldClose(m_window)); }
 
-void renderer_opengl::draw_scene()
+void Renderer_OpenGL::draw_scene()
 {
     // Check for user input
     process_input();
@@ -71,9 +71,9 @@ void renderer_opengl::draw_scene()
     glfwPollEvents();
 }
 
-void renderer_opengl::release()
+void Renderer_OpenGL::release()
 {
-    renderer_base::release();
+    Renderer_Base::release();
 
     glDeleteVertexArrays(1, &m_vao_id);
     glDeleteBuffers(1, &m_vbo_id);
@@ -84,9 +84,9 @@ void renderer_opengl::release()
     glfwTerminate();
 }
 
-static void framebuffer_size_callback(GLFWwindow* window, int width, int height) { renderer_opengl::get_instance().change_framebuffer_size(window, width, height); }
+static void framebuffer_size_callback(GLFWwindow* window, int width, int height) { Renderer_OpenGL::get_instance().change_framebuffer_size(window, width, height); }
 
-void renderer_opengl::initialize_window()
+void Renderer_OpenGL::initialize_window()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -120,9 +120,9 @@ void renderer_opengl::initialize_window()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void renderer_opengl::initialize_fullscreen_quad_rendering()
+void Renderer_OpenGL::initialize_fullscreen_quad_rendering()
 {
-    m_shader_program_id = shader_manager_opengl::get_instance().create_program("../raytracer/src/renderer/shaders/texture");
+    m_shader_program_id = Shader_Manager_OpenGL::get_instance().create_program("../raytracer/src/renderer/shaders/texture");
 
     float vertices[] = {
         // Clip-space positions
@@ -158,14 +158,14 @@ void renderer_opengl::initialize_fullscreen_quad_rendering()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void renderer_opengl::process_input()
+void Renderer_OpenGL::process_input()
 {
     // Enable closing the window on escape key press
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(m_window, true);
 }
 
-void renderer_opengl::change_framebuffer_size(GLFWwindow* window, int width, int height)
+void Renderer_OpenGL::change_framebuffer_size(GLFWwindow* window, int width, int height)
 {
     if (window == m_window && (m_framebuffer_width != width || m_framebuffer_height != height))
     {
