@@ -123,7 +123,7 @@ template <class T, unsigned N> class Vec
      * @brief Computes a normalized version of this vector.
      * @return The normalized vector (a unit vector).
      */
-    virtual Unit_Vec<T, N> normalize() const;
+    virtual Unit_Vec<T, N> normalize() const { return Unit_Vec<T, N>{m_components}; }
 
     template <unsigned M = N> typename std::enable_if_t<(M > 0), T> x() const { return m_components[0]; }
     template <unsigned M = N> typename std::enable_if_t<(M > 1), T> y() const { return m_components[1]; }
@@ -176,8 +176,6 @@ template <class T, unsigned N> class Unit_Vec : public Vec<T, N>
      */
     Unit_Vec normalize() const override { return (*this); }
 };
-
-template <class T, unsigned N> Unit_Vec<T, N> Vec<T, N>::normalize() const { return Unit_Vec<T, N>{m_components}; }
 
 } // namespace math
 

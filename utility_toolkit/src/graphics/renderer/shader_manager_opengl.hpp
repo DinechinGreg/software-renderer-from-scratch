@@ -1,15 +1,17 @@
 #pragma once
 
-#include <utilities/defines.h>
+#include <graphics/renderer/renderer_defines.h>
 
 #if defined(RENDERER_OPENGL)
+
+#include <dll_defines.h>
 
 #include <string>
 
 class Shader_Manager_OpenGL
 {
   public:
-    static Shader_Manager_OpenGL& get_instance()
+    DECLSPECIFIER static Shader_Manager_OpenGL& get_instance()
     {
         static Shader_Manager_OpenGL global_shader_manager{};
         return global_shader_manager;
@@ -21,14 +23,14 @@ class Shader_Manager_OpenGL
      * @param[in] filepath. Path to the shader source, including the name of the file (but not the extension, which is deduced automatically from the type).
      * @return The ID of the created shader object.
      */
-    unsigned int compile_shader(unsigned int type, std::string const& filepath) const;
+    DECLSPECIFIER unsigned int compile_shader(unsigned int type, std::string const& filepath) const;
 
     /**
      * @brief Compiles and links a vertex/fragment program from the source files at the given path.
      * @param[in] filepath. Path to the shader sources, including the name of the files (but not the extension, which is deduced automatically from the type).
      * @return The ID of the created program object.
      */
-    unsigned int create_program(std::string const& filepath) const;
+    DECLSPECIFIER unsigned int create_program(std::string const& filepath) const;
 };
 
 #endif

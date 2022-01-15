@@ -2,8 +2,8 @@
 
 #if defined(RENDERER_OPENGL)
 
-#include <renderer/opengl_headers.h>
-#include <utilities/resource_manager.h>
+#include <filesystem/resource_manager.h>
+#include <graphics/renderer/opengl_headers.h>
 
 #include <iostream>
 #include <string>

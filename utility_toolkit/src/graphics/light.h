@@ -1,9 +1,11 @@
 #pragma once
 
-#include <math/vec.h>
 #include <graphics/transform.h>
+#include <math/vec.h>
 
-enum class Light_Type
+#include <dll_defines.h>
+
+enum class DECLSPECIFIER Light_Type
 {
     ambient,
     directional,
@@ -13,15 +15,15 @@ enum class Light_Type
 class Light : public Transform
 {
   public:
-    Light();
-    Light(Light_Type type, float intensity, Vec3f const& position_or_direction = Vec3f::zero(), Vec3f const& color = Vec3f::one());
-    ~Light() = default;
-    Light(Light const& other) = default;
-    Light& operator=(Light const& other) = default;
+    DECLSPECIFIER Light();
+    DECLSPECIFIER Light(Light_Type type, float intensity, Vec3f const& position_or_direction = Vec3f::zero(), Vec3f const& color = Vec3f::one());
+    DECLSPECIFIER ~Light() = default;
+    DECLSPECIFIER Light(Light const& other) = default;
+    DECLSPECIFIER Light& operator=(Light const& other) = default;
 
-    Light_Type const& get_type() const { return m_type; }
-    float const& get_intensity() const { return m_intensity; }
-    Vec3f const& get_direction() const { return m_direction; }
+    DECLSPECIFIER Light_Type const& get_type() const { return m_type; }
+    DECLSPECIFIER float const& get_intensity() const { return m_intensity; }
+    DECLSPECIFIER Vec3f const& get_direction() const { return m_direction; }
 
     /**
      * @brief Computes the light's contribution to lighting intensity in a given point.
@@ -32,7 +34,7 @@ class Light : public Transform
      * @param[in] specular_intensity. Intensity factor to use for the computation of the specular component.
      * @return The lighting intensity in the given point.
      */
-    float apply_lighting(Vec3f const& point_position, float point_distance, Unit_Vec3f const& point_normal, Unit_Vec3f const& view_direction, float const& specular_intensity) const;
+    DECLSPECIFIER float apply_lighting(Vec3f const& point_position, float point_distance, Unit_Vec3f const& point_normal, Unit_Vec3f const& view_direction, float const& specular_intensity) const;
 
   protected:
     Light_Type m_type;      // Type of light (ambient, directional, point)

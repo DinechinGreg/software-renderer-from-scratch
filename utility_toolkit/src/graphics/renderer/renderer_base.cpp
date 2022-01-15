@@ -1,11 +1,11 @@
 #include "renderer_base.h"
 
-#include <camera.h>
-#include <light.h>
+#include <graphics/camera.h>
+#include <graphics/light.h>
+#include <graphics/sphere.h>
 #include <math/geometry.h>
 #include <math/math.h>
 #include <math/vec.h>
-#include <sphere.h>
 
 #include <mutex>
 #include <thread>
@@ -61,14 +61,14 @@ float Renderer_Base::compute_lighting(Vec3f const& position, float distance, Uni
     return lighting_intensity;
 }
 
-std::pair<Sphere const*, float> Renderer_Base::compute_closest_sphere_intersection(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far) const
+std::pair<Sphere const*, float> Renderer_Base::compute_closest_sphere_intersection(Vec3f const& origin, Unit_Vec3f const& direction, float near_limit, float far_limit) const
 {
     Sphere const* intersected_sphere = nullptr;
-    float closest_intersection = far;
+    float closest_intersection = far_limit;
     for (auto const& s : m_spheres)
     {
         std::vector<float> intersections;
-        if (math::compute_ray_sphere_intersection(origin, direction, s.get_position(), s.get_radius(), intersections, &near, &far) && intersections[0] <= closest_intersection)
+        if (math::compute_ray_sphere_intersection(origin, direction, s.get_position(), s.get_radius(), intersections, &near_limit, &far_limit) && intersections[0] <= closest_intersection)
         {
             intersected_sphere = &s;
             closest_intersection = intersections[0];
@@ -77,24 +77,24 @@ std::pair<Sphere const*, float> Renderer_Base::compute_closest_sphere_intersecti
     return {intersected_sphere, closest_intersection};
 }
 
-bool Renderer_Base::intersects_any_sphere(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far, Sphere const* first_sphere_to_check) const
+bool Renderer_Base::intersects_any_sphere(Vec3f const& origin, Unit_Vec3f const& direction, float near_limit, float far_limit, Sphere const* first_sphere_to_check) const
 {
     std::vector<float> intersections;
-    if (first_sphere_to_check != nullptr && math::compute_ray_sphere_intersection(origin, direction, first_sphere_to_check->get_position(), first_sphere_to_check->get_radius(), intersections, &near, &far))
+    if (first_sphere_to_check != nullptr && math::compute_ray_sphere_intersection(origin, direction, first_sphere_to_check->get_position(), first_sphere_to_check->get_radius(), intersections, &near_limit, &far_limit))
         return true;
     for (auto const& s : m_spheres)
     {
         if (first_sphere_to_check != nullptr && &s == first_sphere_to_check)
             continue;
-        if (math::compute_ray_sphere_intersection(origin, direction, s.get_position(), s.get_radius(), intersections, &near, &far))
+        if (math::compute_ray_sphere_intersection(origin, direction, s.get_position(), s.get_radius(), intersections, &near_limit, &far_limit))
             return true;
     }
     return false;
 }
 
-Vec3f const Renderer_Base::compute_color_from_ray(Vec3f const& origin, Unit_Vec3f const& direction, float near, float far, float recursion_depth) const
+Vec3f const Renderer_Base::compute_color_from_ray(Vec3f const& origin, Unit_Vec3f const& direction, float near_limit, float far_limit, float recursion_depth) const
 {
-    auto const closest_sphere_intersection = compute_closest_sphere_intersection(origin, direction, near, far);
+    auto const closest_sphere_intersection = compute_closest_sphere_intersection(origin, direction, near_limit, far_limit);
     auto const* intersected_sphere = closest_sphere_intersection.first;
     if (intersected_sphere != nullptr)
     {
@@ -109,7 +109,7 @@ Vec3f const Renderer_Base::compute_color_from_ray(Vec3f const& origin, Unit_Vec3
         if (recursion_depth > 0 && reflective_intensity > 0.0f)
         {
             auto const& reflected_direction = math::compute_reflected_ray(-direction, intersection_normal).normalize();
-            auto const& reflected_color = compute_color_from_ray(intersection_position, reflected_direction, math::distance_epsilon(intersection_distance, 2.0f), far, recursion_depth - 1);
+            auto const& reflected_color = compute_color_from_ray(intersection_position, reflected_direction, math::distance_epsilon(intersection_distance, 2.0f), far_limit, recursion_depth - 1);
             return (1.0f - reflective_intensity) * local_color + reflective_intensity * reflected_color;
         }
         else
@@ -125,12 +125,12 @@ Vec3f const Renderer_Base::compute_color_from_ray(Vec3f const& origin, Unit_Vec3
 
 Vec3f const Renderer_Base::compute_pixel_color(float u, float v) const
 {
-    auto const& near = m_draw_camera.get_near();
-    auto const& far = m_draw_camera.get_far();
+    auto const& near_limit = m_draw_camera.get_near();
+    auto const& far_limit = m_draw_camera.get_far();
     Vec3f const& ray_origin{Vec3f::zero()};
-    Unit_Vec3f const& ray_direction = Vec3f{u, v, near}.normalize();
+    Unit_Vec3f const& ray_direction = Vec3f{u, v, near_limit}.normalize();
     auto const recursion_max_depth = 1;
-    return compute_color_from_ray(ray_origin, ray_direction, near, far, recursion_max_depth);
+    return compute_color_from_ray(ray_origin, ray_direction, near_limit, far_limit, recursion_max_depth);
 }
 
 void Renderer_Base::launch_pixel_loading_threads()

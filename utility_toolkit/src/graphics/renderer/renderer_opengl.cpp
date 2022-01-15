@@ -2,14 +2,15 @@
 
 #if defined(RENDERER_OPENGL)
 
-#include <renderer/opengl_headers.h>
-#include <renderer/shader_manager_opengl.hpp>
+#include <graphics/renderer/opengl_headers.h>
+#include <graphics/renderer/shader_manager_opengl.hpp>
 
 #include <array>
 #include <atomic>
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <vector>
 
 Renderer_OpenGL::Renderer_OpenGL()
     : Renderer_Base()
@@ -58,7 +59,7 @@ void Renderer_OpenGL::draw_scene()
             auto const pixel_rgb = pixel.second;
             auto const pixel_y = pixel_index / m_framebuffer_width;
             auto const pixel_x = pixel_index - (pixel_y * m_framebuffer_width);
-            std::vector pixel_rgb_value{pixel_rgb.x(), pixel_rgb.y(), pixel_rgb.z()};
+            std::vector<float> pixel_rgb_value{pixel_rgb.x(), pixel_rgb.y(), pixel_rgb.z()};
             glTexSubImage2D(GL_TEXTURE_2D, 0, pixel_x, pixel_y, 1, 1, GL_RGB, GL_FLOAT, pixel_rgb_value.data());
         }
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -122,7 +123,7 @@ void Renderer_OpenGL::initialize_window()
 
 void Renderer_OpenGL::initialize_fullscreen_quad_rendering()
 {
-    m_shader_program_id = Shader_Manager_OpenGL::get_instance().create_program("../raytracer/src/renderer/shaders/texture");
+    m_shader_program_id = Shader_Manager_OpenGL::get_instance().create_program("../utility_toolkit/src/graphics/renderer/shaders/texture");
 
     float vertices[] = {
         // Clip-space positions

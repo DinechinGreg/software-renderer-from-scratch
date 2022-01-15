@@ -2,10 +2,11 @@
 
 #if defined(RENDERER_TO_FILE)
 
+#include <algorithm>
 #include <fstream>
 #include <vector>
 
-void Renderer_To_File::initialize(camera const& draw_camera, Vec3f const& background_color)
+void Renderer_To_File::initialize(Camera const& draw_camera, Vec3f const& background_color)
 {
     Renderer_Base::initialize(draw_camera, background_color);
     m_has_drawn_scene = false;
@@ -28,7 +29,7 @@ void Renderer_To_File::draw_scene()
         {
             auto const index = (row_it * m_framebuffer_height + column_it);
             auto const loaded_pixel = m_loaded_pixels.at(index);
-            ofs << static_cast<unsigned char>(std::min(1.0f, loaded_pixel.x()) * 255) << static_cast<unsigned char>(std::min(1.0f, loaded_pixel.y()) * 255) << static_cast<unsigned char>(std::min(1.0f, loaded_pixel.z()) * 255);
+            ofs << static_cast<unsigned char>((std::min)(1.0f, loaded_pixel.x()) * 255) << static_cast<unsigned char>((std::min)(1.0f, loaded_pixel.y()) * 255) << static_cast<unsigned char>((std::min)(1.0f, loaded_pixel.z()) * 255);
         }
     }
     ofs.close();

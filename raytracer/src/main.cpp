@@ -1,7 +1,8 @@
-#include <camera.h>
-#include <math/sorting.h>
-#include <math/vec.h>
+#include <graphics/camera.h>
 #include <graphics/renderer/renderer.h>
+#include <math/vec.h>
+
+#include <dll_defines.h>
 
 int main()
 {

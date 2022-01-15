@@ -1,7 +1,9 @@
 #pragma once
 
-#include <math/vec.h>
 #include <graphics/transform.h>
+#include <math/vec.h>
+
+#include <dll_defines.h>
 
 #include <limits>
 #include <vector>
