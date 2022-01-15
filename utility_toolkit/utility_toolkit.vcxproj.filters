@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{7bab9246-e17f-44d4-9f4e-94f8f2900b42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\third_party">
+      <UniqueIdentifier>{e2f54453-1d4e-4095-8ad1-138dc77b714a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filesystem">
+      <UniqueIdentifier>{f17e4553-00c3-48d3-9aed-a383ca91b8c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\filesystem">
+      <UniqueIdentifier>{53283097-5261-4161-8a7c-25cac4873a8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics">
+      <UniqueIdentifier>{906d6a32-07c5-46a4-9434-5d645d7e60ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\renderer">
+      <UniqueIdentifier>{93d3e038-610c-4b06-8116-eeff8692f712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\renderer\shaders">
+      <UniqueIdentifier>{0ad6e277-2db2-489e-a1ca-42cea1457732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphics">
+      <UniqueIdentifier>{da3eb6b6-6f1c-434a-a963-f94709570447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphics\renderer">
+      <UniqueIdentifier>{717a8c6c-6416-4eb6-b710-39c9b8b33542}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\geometry.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\math.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\sorting.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\vec.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\light.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\sphere.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\transform.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\opengl_headers.h">
+      <Filter>Header Files\graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderer.h">
+      <Filter>Header Files\graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderer_base.h">
+      <Filter>Header Files\graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderer_opengl.h">
+      <Filter>Header Files\graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderer_to_file.h">
+      <Filter>Header Files\graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\shader_manager_opengl.hpp">
+      <Filter>Header Files\graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\resource_manager.h">
+      <Filter>Header Files\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dll_defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderer_defines.h">
+      <Filter>Header Files\graphics\renderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\resource_manager.cpp">
+      <Filter>Source Files\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\light.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\sphere.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\transform.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderer_base.cpp">
+      <Filter>Source Files\graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderer_opengl.cpp">
+      <Filter>Source Files\graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderer_to_file.cpp">
+      <Filter>Source Files\graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\shader_manager_opengl.cpp">
+      <Filter>Source Files\graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\src\glad.c">
+      <Filter>Source Files\third_party</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\graphics\renderer\shaders\texture.frag">
+      <Filter>Source Files\graphics\renderer\shaders</Filter>
+    </None>
+    <None Include="src\graphics\renderer\shaders\texture.vtx">
+      <Filter>Source Files\graphics\renderer\shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
