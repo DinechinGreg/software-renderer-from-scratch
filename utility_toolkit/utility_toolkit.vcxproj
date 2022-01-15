@@ -116,7 +116,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,7 +141,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -162,7 +162,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -187,7 +187,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
