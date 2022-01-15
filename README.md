@@ -8,6 +8,12 @@ Two versions are presented, yielding identical outputs. The first does not rely 
 
 The project was build using Visual Studio 2019. Solution and project files are included in the repository.
 
+Here is an example of what you should see as a result of launching the raytracer project:
+
+<p align="center">
+  <img width="512" height="512" src="https://github.com/DinechinGreg/software-renderer-from-scratch/blob/main/raytracer/example_output.png?raw=true" alt="Example output"/>
+</p>
+
 ## Inspiration
 
 The series of articles by Gabriel Gambetta titled [Computer Graphics from Scratch](https://www.gabrielgambetta.com/computer-graphics-from-scratch/) were the main inspiration for this project.
