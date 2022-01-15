@@ -41,10 +41,41 @@ void Renderer_Base::release()
 
 void Renderer_Base::setup_scene()
 {
-    m_spheres.push_back(Sphere{Vec3f{0.0f, -1.0f, 3.0f}, 1.0f, Vec3f{1.0f, 0.0f, 0.0f}, 500.0f, 0.2f});
-    m_spheres.push_back(Sphere{Vec3f{2.0f, 0.0f, 4.0f}, 1.0f, Vec3f{0.0f, 1.0f, 0.0f}, 500.0f, 0.3f});
-    m_spheres.push_back(Sphere{Vec3f{-2.0f, 0.0f, 4.0f}, 1.0f, Vec3f{0.0f, 0.0f, 1.0f}, 10.0f, 0.4f});
-    m_spheres.push_back(Sphere{Vec3f{0.0f, -5001.0f, 0.0f}, 5000.0f, Vec3f{1.0f, 1.0f, 0.0f}, 1000.0f, 0.5f});
+    auto const radius = 1.5f;
+    auto const min_color = 0.7f;
+    auto const z = 30.0f;
+    auto const mult = 3.0f;
+    auto const a_t = mult;
+    auto const a_r = -0.3f * mult;
+    auto const b_r = a_r + 1.5f * mult;
+    std::vector<Vec3f> const positions = {
+        // Background
+        Vec3f{0.0f, 0.0f, 10 * z},
+        // 3 top
+        Vec3f{(a_r - 2) * mult, a_t * mult, z}, Vec3f{(a_r - 1) * mult, a_t * mult, z}, Vec3f{a_r * mult, (a_t - 1) * mult, z}, Vec3f{a_r * mult, (a_t - 2) * mult, z},
+        // 3 middle
+        Vec3f{(a_r - 2) * mult, (a_t - 2.5f) * mult, z}, Vec3f{(a_r - 1) * mult, (a_t - 2.5f) * mult, z},
+        // 3 bottom
+        Vec3f{(a_r - 2) * mult, (a_t - 5) * mult, z}, Vec3f{(a_r - 1) * mult, (a_t - 5) * mult, z}, Vec3f{a_r * mult, (a_t - 4) * mult, z}, Vec3f{a_r * mult, (a_t - 3) * mult, z},
+        // D top
+        Vec3f{(b_r - 2) * mult, a_t * mult, z}, Vec3f{(b_r - 1) * mult, a_t * mult, z}, Vec3f{b_r * mult, (a_t - 1) * mult, z}, Vec3f{b_r * mult, (a_t - 2) * mult, z},
+        // D middle
+        Vec3f{(b_r - 2) * mult, (a_t - 1.5f) * mult, z}, Vec3f{(b_r - 2) * mult, (a_t - 2.5f) * mult, z}, Vec3f{(b_r - 2) * mult, (a_t - 3.5f) * mult, z},
+        // D bottom
+        Vec3f{(b_r - 2) * mult, (a_t - 5) * mult, z}, Vec3f{(b_r - 1) * mult, (a_t - 5) * mult, z}, Vec3f{b_r * mult, (a_t - 4) * mult, z}, Vec3f{b_r * mult, (a_t - 3) * mult, z},
+        // End
+    };
+    for (auto i = 0; i < positions.size(); i++)
+    {
+        Vec3f random_color{math::generate_random_01(), math::generate_random_01(), math::generate_random_01()};
+        auto const color_average = random_color.average();
+        if (color_average < 0.75f)
+            random_color *= 2.0f;
+        auto const random_specular = 10.0f * math::generate_random_01();
+        auto const random_reflective = 0.4f * math::generate_random_01();
+        Sphere const sphere{positions[i], (i == 0) ? 90 * radius : radius, random_color, random_specular, random_reflective};
+        m_spheres.push_back(sphere);
+    }
 
     m_lights.push_back(Light{Light_Type::ambient, 0.2f});
     m_lights.push_back(Light{Light_Type::point, 0.6f, Vec3f{2.0f, 1.0f, 0.0f}});

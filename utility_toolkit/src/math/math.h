@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <limits>
+#include <random>
 
 namespace math
 {
@@ -26,5 +27,16 @@ static float numeric_infinity() { return std::numeric_limits<float>::infinity();
  * @return The custom epsilon, as a float.
  */
 static float distance_epsilon(float base, float exponent = 1.0f, float mult_factor = 1e-4f) { return std::pow(base, exponent) * mult_factor; }
+
+/**
+ * @brief Generates a random floating point number in range [0,1[.
+ * @return The generated number, as a float.
+ */
+static float generate_random_01()
+{
+    std::random_device random_device;
+    std::mt19937 random_engine(random_device());
+    return std::generate_canonical<float, 10>(random_engine);
+}
 
 } // namespace math

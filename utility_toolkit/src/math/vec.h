@@ -78,6 +78,7 @@ template <class T, unsigned N> class Vec
     Vec operator-(Vec const& other) const { return operator+(-other); }
     Vec operator-() const { return (*this) * static_cast<T>(-1); }
     void operator+=(Vec const& other) { *this = *this + other; }
+    void operator*=(float const& other) { *this = *this * other; }
     T operator[](unsigned int i) const { return m_components[i]; }
 
     /**
@@ -118,6 +119,26 @@ template <class T, unsigned N> class Vec
      * @return The computed length (a scalar value).
      */
     virtual T length() const { return std::sqrt(this->dot(*this)); }
+
+    /**
+     * @brief Computes the sum of the vector's components.
+     * @return The computed sum (a scalar value).
+     */
+    virtual T sum() const
+    {
+        if (N == 0)
+            return 0;
+        auto s = m_components[0];
+        for (auto i = 0; i < N; i++)
+            s += m_components[i];
+        return s;
+    }
+
+    /**
+     * @brief Computes the average of the vector's components.
+     * @return The computed average (a scalar value).
+     */
+    virtual T average() const { return (N > 0) ? (sum() / N) : 0; }
 
     /**
      * @brief Computes a normalized version of this vector.
