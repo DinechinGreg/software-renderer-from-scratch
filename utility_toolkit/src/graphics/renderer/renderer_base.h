@@ -40,17 +40,6 @@ class Renderer_Base
     DECLSPECIFIER virtual void release();
 
     /**
-     * @brief Computes the lighting intensity in a given position, based on the lights in the scene.
-     * @param[in] position. Position of the point in which to compute lighting, resulting from an intersection between a ray and the scene's geometry.
-     * @param[in] distance. Distance separating the point from the ray's origin, used to have a notion of the precision of the intersection position.
-     * @param[in] normal. Normal direction of the surface in the given point, as a unit vector.
-     * @param[in] view_direction. Direction from the point to the origin of the ray, as a unit vector.
-     * @param[in] specular_intensity. Intensity factor to use for the computation of the specular component.
-     * @return The lighting intensity in the given point.
-     */
-    DECLSPECIFIER float compute_lighting(Vec3f const& position, float distance, Unit_Vec3f const& normal, Unit_Vec3f const& view_direction, float specular_intensity) const;
-
-    /**
      * @brief Computes the closest intersection between the ray and an element of the scene's geometry.
      * @param[in] origin. Origin of the ray.
      * @param[in] direction. Direction of the ray, as a unit vector.

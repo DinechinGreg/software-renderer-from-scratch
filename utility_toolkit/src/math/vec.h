@@ -61,37 +61,73 @@ template <class T, unsigned N> class Vec
     {
     }
 
+    Vec operator+(T const& scalar) const
+    {
+        std::array<T, N> components;
+        for (auto i = 0u; i < N; i++)
+            components[i] = scalar + m_components[i];
+        return Vec{components};
+    }
     Vec operator+(Vec const& other) const
     {
         std::array<T, N> components;
-        for (auto it = 0u; it < N; it++)
-            components[it] = m_components[it] + other.m_components[it];
+        for (auto i = 0u; i < N; i++)
+            components[i] = other.m_components[i] + m_components[i];
         return Vec{components};
     }
     Vec operator*(T const& scalar) const
     {
         std::array<T, N> components;
-        for (auto it = 0u; it < N; it++)
-            components[it] = scalar * m_components[it];
+        for (auto i = 0u; i < N; i++)
+            components[i] = scalar * m_components[i];
         return Vec{components};
     }
+    Vec operator*(Vec const& other) const
+    {
+        std::array<T, N> components;
+        for (auto i = 0u; i < N; i++)
+            components[i] = other.m_components[i] * m_components[i];
+        return Vec{components};
+    }
+    Vec operator/(Vec const& other) const
+    {
+        std::array<T, N> components;
+        for (auto i = 0u; i < N; i++)
+            components[i] = m_components[i] / other.m_components[i];
+        return Vec{components};
+    }
+    Vec operator/(T const& scalar) const { return operator*(static_cast<T>(1.0f / scalar)); }
+    Vec operator-(T const& scalar) const { return operator+(-scalar); }
     Vec operator-(Vec const& other) const { return operator+(-other); }
-    Vec operator-() const { return (*this) * static_cast<T>(-1); }
-    void operator+=(Vec const& other) { *this = *this + other; }
-    void operator*=(float const& other) { *this = *this * other; }
+    Vec operator-() const { return operator*(static_cast<T>(-1)); }
+    void operator+=(Vec const& other) { *this = operator+(other); }
+    void operator*=(float const& other) { *this = operator*(other); }
     T operator[](unsigned int i) const { return m_components[i]; }
 
     /**
      * @brief Computes the dot product between this vector and another.
-     * @param other. The other vector with which to compute the dot product.
+     * @param[in] other. The other vector with which to compute the dot product.
      * @return The dot product (a scalar value).
      */
     T dot(Vec const& other) const
     {
         T sum = 0;
-        for (auto it = 0u; it < N; it++)
-            sum += m_components[it] * other.m_components[it];
+        for (auto i = 0u; i < N; i++)
+            sum += m_components[i] * other.m_components[i];
         return sum;
+    }
+
+    /**
+     * @brief Returns the vector raised to the given power.
+     * @param[in] scalar. The power at which to raise the vector.
+     * @return The vector raised to the given power.
+     */
+    Vec<T, N> pow(T const& scalar) const
+    {
+        std::array<T, N> components;
+        for (auto i = 0u; i < N; i++)
+            components[i] = std::pow(m_components[i], scalar);
+        return Vec{components};
     }
 
     /**
@@ -155,7 +191,10 @@ template <class T, unsigned N> class Vec
     std::array<T, N> m_components;
 };
 
+template <class T, unsigned N> Vec<T, N> operator+(T const& scalar, Vec<T, N> const& v) { return v + scalar; }
 template <class T, unsigned N> Vec<T, N> operator*(T const& scalar, Vec<T, N> const& v) { return v * scalar; }
+template <class T, unsigned N> Vec<T, N> operator/(T const& scalar, Vec<T, N> const& v) { return Vec<T, N>{scalar} / v; }
+template <class T, unsigned N> Vec<T, N> operator-(T const& scalar, Vec<T, N> const& v) { return Vec<T, N>{scalar} - v; }
 
 /**
  * @brief Defines a unit N-dimensional vector.
@@ -175,8 +214,8 @@ template <class T, unsigned N> class Unit_Vec : public Vec<T, N>
         if ((std::abs(l - 1.0f) > std::numeric_limits<T>::epsilon()) && (l > std::numeric_limits<T>::epsilon()))
         {
             T const& one_on_length = (1.0f / l);
-            for (auto it = 0; it < N; it++)
-                this->m_components[it] *= one_on_length;
+            for (auto i = 0; i < N; i++)
+                this->m_components[i] *= one_on_length;
         }
     }
 
@@ -204,6 +243,11 @@ template <class T, unsigned N> class Unit_Vec : public Vec<T, N>
  * @brief Two-dimensional vector of unsigned integers.
  */
 using Vec2u = math::Vec<unsigned int, 2u>;
+
+/**
+ * @brief Two-dimensional vector of floats.
+ */
+using Vec2f = math::Vec<float, 2u>;
 
 /**
  * @brief Three-dimensional vector of floats.

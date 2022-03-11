@@ -26,51 +26,39 @@ Light::Light(Light_Type type, float intensity, Vec3f const& position_or_directio
     }
 }
 
-float Light::apply_lighting(Vec3f const& point_position, float point_distance, Unit_Vec3f const& point_normal, Unit_Vec3f const& view_direction, float const& specular_intensity) const
+Unit_Vec3f Light::compute_light_direction(Vec3f const& point_position) const
 {
-    float out_lighting = 0.0f;
-    // Apply ambient lighting
-    if (m_type == Light_Type::ambient)
+    if (m_type == Light_Type::point)
     {
-        out_lighting += m_intensity;
+        auto const point_to_light = (m_position - point_position);
+        return point_to_light.normalize();
     }
-    else
+    else if (m_type == Light_Type::directional)
     {
-        Unit_Vec3f l{Vec3f::zero()};
-        float max_intersection_distance{0.0f};
-        if (m_type == Light_Type::point)
-        {
-            auto const point_to_light = (m_position - point_position);
-            l = point_to_light.normalize();
-            max_intersection_distance = point_to_light.length();
-        }
-        else if (m_type == Light_Type::directional)
-        {
-            l = -m_direction;
-            max_intersection_distance = math::numeric_infinity();
-        }
-
-        // Check for shadows
-        if (Renderer::get_instance().intersects_any_sphere(point_position, l, math::distance_epsilon(point_distance, 1.0f, 1e-2f), max_intersection_distance))
-            return out_lighting;
-
-        // Apply diffuse lighting
-        auto const& n_dot_l = point_normal.dot(l);
-        if (n_dot_l > 0.0f)
-        {
-            out_lighting += m_intensity * n_dot_l;
-        }
-
-        // Apply specular lighting
-        if (specular_intensity != -1)
-        {
-            auto const& reflection_direction = math::compute_reflected_ray(l, point_normal, &n_dot_l).normalize();
-            auto const& r_dot_v = reflection_direction.dot(view_direction);
-            if (r_dot_v > 0)
-            {
-                out_lighting += m_intensity * std::pow(r_dot_v, specular_intensity);
-            }
-        }
+        return -m_direction;
     }
-    return out_lighting;
+    return Vec3f::zero();
+}
+
+float Light::compute_light_distance(Vec3f const& point_position) const
+{
+    if (m_type == Light_Type::point)
+    {
+        auto const point_to_light = (m_position - point_position);
+        return point_to_light.length();
+    }
+    else if (m_type == Light_Type::directional)
+    {
+        return math::numeric_infinity();
+    }
+    return 0.0f;
+}
+
+Vec3f Light::compute_radiance(float const& light_distance) const
+{
+    float attenuation = 1.0f;
+    if (m_type == Light_Type::point)
+        attenuation = 1.0f / (light_distance * light_distance);
+    auto const radiance = m_intensity * m_color * attenuation;
+    return radiance;
 }

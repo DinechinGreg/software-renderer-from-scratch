@@ -1,19 +1,26 @@
 #include "sphere.h"
 
+#include <graphics/material.h>
+#include <math/math.h>
 #include <math/vec.h>
 
 #include <cmath>
 
-Sphere::Sphere(Vec3f const& center, float radius, Vec3f const& color, float const& specular_intensity, float const& reflective_intensity)
+Sphere::Sphere(Vec3f const& center, float radius, Material const& material)
     : Transform{center}
     , m_radius{radius}
-    , m_color{color}
-    , m_specular_intensity{specular_intensity}
-    , m_reflective_intensity{reflective_intensity}
+    , m_material{material}
 {
 }
 
 Sphere::Sphere()
-    : Sphere{Vec3f::zero(), 1.0f, Vec3f::zero(), -1.0f, -1.0f}
+    : Sphere{Vec3f::zero(), 1.0f, Vec3f::zero()}
 {
+}
+
+Vec2f Sphere::compute_uv_from_normal(Vec3f const& normal)
+{
+    auto const u = atan2(normal.x(), normal.z()) / (2.0f * math::pi) + 0.5f;
+    auto const v = normal.y() * 0.5f + 0.5f;
+    return Vec2f{u, v};
 }

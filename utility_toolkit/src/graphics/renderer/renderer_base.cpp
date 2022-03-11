@@ -2,6 +2,7 @@
 
 #include <graphics/camera.h>
 #include <graphics/light.h>
+#include <graphics/material.h>
 #include <graphics/sphere.h>
 #include <math/geometry.h>
 #include <math/math.h>
@@ -73,23 +74,12 @@ void Renderer_Base::setup_scene()
             random_color *= 2.0f;
         auto const random_specular = 10.0f * math::generate_random_01();
         auto const random_reflective = 0.4f * math::generate_random_01();
-        Sphere const sphere{positions[i], (i == 0) ? 90 * radius : radius, random_color, random_specular, random_reflective};
+        Sphere const sphere{positions[i], (i == 0) ? 90 * radius : radius, random_color};
         m_spheres.push_back(sphere);
     }
 
-    m_lights.push_back(Light{Light_Type::ambient, 0.2f});
-    m_lights.push_back(Light{Light_Type::point, 0.6f, Vec3f{2.0f, 1.0f, 0.0f}});
-    m_lights.push_back(Light{Light_Type::directional, 0.2f, Vec3f{-1.0f, -4.0f, -4.0f}});
-}
-
-float Renderer_Base::compute_lighting(Vec3f const& position, float distance, Unit_Vec3f const& normal, Unit_Vec3f const& view_direction, float specular_intensity) const
-{
-    float lighting_intensity = 0.0f;
-    for (auto const& l : m_lights)
-    {
-        lighting_intensity += l.apply_lighting(position, distance, normal, view_direction, specular_intensity);
-    }
-    return lighting_intensity;
+    m_lights.push_back(Light{Light_Type::ambient, 0.03f});
+    m_lights.push_back(Light{Light_Type::point, 1000.0f, Vec3f{2.0f, 1.0f, 0.0f}});
 }
 
 std::pair<Sphere const*, float> Renderer_Base::compute_closest_sphere_intersection(Vec3f const& origin, Unit_Vec3f const& direction, float near_limit, float far_limit) const
@@ -130,15 +120,19 @@ Vec3f const Renderer_Base::compute_color_from_ray(Vec3f const& origin, Unit_Vec3
     if (intersected_sphere != nullptr)
     {
         // Compute local color
+        auto const& sphere_material = intersected_sphere->get_material();
         auto const& intersection_distance = closest_sphere_intersection.second;
-        auto const& intersection_position = origin + intersection_distance * direction;
-        auto const& intersection_normal = (intersection_position - intersected_sphere->get_position()).normalize();
-        auto const& local_color = compute_lighting(intersection_position, intersection_distance, intersection_normal, -direction, intersected_sphere->get_specular_intensity()) * intersected_sphere->get_color();
+        auto const shadows_near_limit = math::distance_epsilon(intersection_distance, 1.0f, 1e-2f);
+        auto const intersection_position = origin + intersection_distance * direction;
+        auto const intersection_normal = (intersection_position - intersected_sphere->get_position()).normalize();
+        auto const intersection_uv = intersected_sphere->compute_uv_from_normal(intersection_normal);
+        auto const local_color = sphere_material.apply_lighting_in_point(m_lights, intersection_normal, m_draw_camera.get_position(), intersection_position, shadows_near_limit, intersection_uv);
 
         // If the object is reflective and we have not yet reached the recursion limit, send another ray
-        auto const& reflective_intensity = intersected_sphere->get_reflective_intensity();
-        if (recursion_depth > 0 && reflective_intensity > 0.0f)
+        // TODO : make this depend on the material's properties, as the reflective intensity is set arbitrarily for now
+        if (recursion_depth > 0)
         {
+            auto const reflective_intensity = 0.2f;
             auto const& reflected_direction = math::compute_reflected_ray(-direction, intersection_normal).normalize();
             auto const& reflected_color = compute_color_from_ray(intersection_position, reflected_direction, math::distance_epsilon(intersection_distance, 2.0f), far_limit, recursion_depth - 1);
             return (1.0f - reflective_intensity) * local_color + reflective_intensity * reflected_color;

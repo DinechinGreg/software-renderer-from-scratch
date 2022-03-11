@@ -96,6 +96,15 @@
     <ClInclude Include="src\graphics\renderer\renderer_defines.h">
       <Filter>Header Files\graphics\renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\physically_based_rendering.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\material.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\texture.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -133,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="third_party\src\glad.c">
       <Filter>Source Files\third_party</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\material.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

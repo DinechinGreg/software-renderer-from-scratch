@@ -116,7 +116,8 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build"
+copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,7 +142,8 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build"
+copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -162,7 +164,8 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build"
+copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -187,7 +190,8 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build" &amp; copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
+      <Command>if not exist "..\raytracer\_build" mkdir "..\raytracer\_build"
+copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -195,6 +199,8 @@
     <ClInclude Include="src\filesystem\resource_manager.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\light.h" />
+    <ClInclude Include="src\graphics\material.h" />
+    <ClInclude Include="src\graphics\physically_based_rendering.h" />
     <ClInclude Include="src\graphics\renderer\renderer_defines.h" />
     <ClInclude Include="src\graphics\renderer\opengl_headers.h" />
     <ClInclude Include="src\graphics\renderer\renderer.h" />
@@ -203,6 +209,7 @@
     <ClInclude Include="src\graphics\renderer\renderer_to_file.h" />
     <ClInclude Include="src\graphics\renderer\shader_manager_opengl.hpp" />
     <ClInclude Include="src\graphics\sphere.h" />
+    <ClInclude Include="src\graphics\texture.h" />
     <ClInclude Include="src\graphics\transform.h" />
     <ClInclude Include="src\math\geometry.h" />
     <ClInclude Include="src\math\math.h" />
@@ -215,6 +222,7 @@
     <ClCompile Include="src\filesystem\resource_manager.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\light.cpp" />
+    <ClCompile Include="src\graphics\material.cpp" />
     <ClCompile Include="src\graphics\renderer\renderer_base.cpp" />
     <ClCompile Include="src\graphics\renderer\renderer_opengl.cpp" />
     <ClCompile Include="src\graphics\renderer\renderer_to_file.cpp" />

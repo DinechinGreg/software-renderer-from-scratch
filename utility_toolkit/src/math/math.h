@@ -1,11 +1,17 @@
 #pragma once
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
 #include <random>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 namespace math
 {
+
+constexpr float pi = static_cast<float>(M_PI);
 
 /**
  * @brief Returns a default epsilon float value.
@@ -38,5 +44,26 @@ static float generate_random_01()
     std::mt19937 random_engine(random_device());
     return std::generate_canonical<float, 10>(random_engine);
 }
+
+/**
+ * @brief Performs linear interpolation between the given values using the given weight.
+ * @tparam T. Type of the range values.
+ * @tparam U. Type of the weight value.
+ * @param[in] start. The start of the range in which to interpolate.
+ * @param[in] end. The end of the range in which to interpolate.
+ * @param[in] weight. The value to use to interpolate between start and end.
+ * @return The interpolated value.
+ */
+template <typename T, typename U> T linear_interpolation(T start, T end, U weight) { return start * (1.0f - weight) + end * weight; }
+
+/**
+ * @brief Clamps the given value in the given range.
+ * @tparam T. Type of the values.
+ * @param[in] value. The value to clamp.
+ * @param[in] start. The start of the range in which to clamp.
+ * @param[in] end. The end of the range in which to clamp.
+ * @return The clamped value.
+ */
+template <typename T> T clamp(T value, T start, T end) { return (std::max)(start, (std::min)(end, value)); }
 
 } // namespace math
