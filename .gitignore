@@ -36,3 +36,6 @@
 
 # Build folders
 */_build/*
+
+# Clang-format
+*.clang-format
