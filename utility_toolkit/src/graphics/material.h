@@ -9,17 +9,17 @@
 class Material
 {
   public:
-    Material(Vec3f albedo)
+    Material(Texture albedo, Texture metallic = Texture{Vec3f{0.2f}}, Texture roughness = Texture{Vec3f{0.1f}}, Texture ambient_occlusion = Texture{Vec3f{0.1f}})
         : m_albedo_texture{albedo}
-        , m_metallic_map{Vec3f{0.2f}}
-        , m_roughness_map{Vec3f{0.1f}}
-        , m_ambient_occlusion_map{Vec3f{0.1f}}
+        , m_metallic_map{metallic}
+        , m_roughness_map{roughness}
+        , m_ambient_occlusion_map{ambient_occlusion}
     {
     }
 
     Vec3f get_albedo(Vec2f const& uv) const { return m_albedo_texture.sample(uv).pow(2.2f); }
     float get_metallic(Vec2f const& uv) const { return m_metallic_map.sample(uv).x(); }
-    float get_roughness(Vec2f const& uv) const { return m_roughness_map.sample(uv).x(); }
+    float get_roughness(Vec2f const& uv) const { return roughness_remap(m_roughness_map.sample(uv).x()); }
     float get_ambient_occlusion(Vec2f const& uv) const { return m_ambient_occlusion_map.sample(uv).x(); }
     Vec3f get_base_reflectivity(Vec3f const& albedo, float metallic) const { return math::linear_interpolation(Vec3f{dielectric_base_reflectivity}, albedo, metallic); }
     Vec3f get_base_reflectivity(Vec2f const& uv) const { return get_base_reflectivity(get_albedo(uv), get_metallic(uv)); }

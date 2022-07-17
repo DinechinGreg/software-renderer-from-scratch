@@ -6,19 +6,7 @@
 
 #include <cmath>
 
-Sphere::Sphere(Vec3f const& center, float radius, Material const& material)
-    : Transform{center}
-    , m_radius{radius}
-    , m_material{material}
-{
-}
-
-Sphere::Sphere()
-    : Sphere{Vec3f::zero(), 1.0f, Vec3f::zero()}
-{
-}
-
-Vec2f Sphere::compute_uv_from_normal(Vec3f const& normal)
+Vec2f Sphere::compute_uv_from_normal(Unit_Vec3f const& normal)
 {
     auto const u = atan2(normal.x(), normal.z()) / (2.0f * math::pi) + 0.5f;
     auto const v = normal.y() * 0.5f + 0.5f;

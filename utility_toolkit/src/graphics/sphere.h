@@ -14,8 +14,12 @@
 class Sphere : public Transform
 {
   public:
-    Sphere();
-    Sphere(Vec3f const& center, float radius, Material const& material);
+    Sphere(Vec3f const& center = Vec3f::zero(), float radius = 0.5f, Material const& material = Material{Vec3f::zero()})
+        : Transform{center}
+        , m_radius{radius}
+        , m_material{material}
+    {
+    }
     ~Sphere() = default;
     Sphere(Sphere const& other) = default;
     Sphere& operator=(Sphere const& other) = default;
@@ -28,7 +32,7 @@ class Sphere : public Transform
      * @param[in] normal. Normal direction of a given point on the sphere.
      * @return The corresponding texture UV value.
      */
-    static Vec2f compute_uv_from_normal(Vec3f const& normal);
+    static Vec2f compute_uv_from_normal(Unit_Vec3f const& normal);
 
   private:
     float m_radius;      // Radius of the sphere

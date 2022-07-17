@@ -26,6 +26,18 @@ static Vec3f reinhard_tone_mapping(Vec3f const& color) { return color / (1.0f + 
 static Vec3f gamma_correction(Vec3f const& color, float gamma = 2.2f) { return color.pow(1.0f / gamma); }
 
 /**
+ * @brief Remaps roughness values in the 0-1 range to a range more suited to the BRDF methods used here.
+ * @param[in] roughness_01. Roughness value between 0 and 1.
+ * @return Roughness value that can be used as input to the BRDF methods used here.
+ */
+static float roughness_remap(float roughness_01)
+{
+    auto constexpr min = 0.08f;
+    auto constexpr max = 1.0f;
+    return roughness_01 * max + (1.0f - roughness_01) * min;
+}
+
+/**
  * @brief Computes the Fresnel-Schlick approximation of the Fresnel equation, given a base reflectivity and a surface-to-view angle.
  * @param[in] base_reflectivity. Base reflectivity of the surface.
  * @param[in] cos_theta. Cosine of the angle between the surface normal and view direction.

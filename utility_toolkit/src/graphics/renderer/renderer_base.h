@@ -2,6 +2,7 @@
 
 #include <graphics/camera.h>
 #include <graphics/light.h>
+#include <graphics/scene.h>
 #include <graphics/sphere.h>
 #include <math/vec.h>
 
@@ -86,11 +87,6 @@ class Renderer_Base
     DECLSPECIFIER Renderer_Base& operator=(Renderer_Base const& other) = delete;
 
     /**
-     * @brief Sets up lights and geometry in the scene.
-     */
-    DECLSPECIFIER void setup_scene();
-
-    /**
      * @brief Computes and stores the colors of the next unhandled row of the framebuffer.
      * This method is made to be called asynchronously using the group of member threads.
      */
@@ -105,8 +101,7 @@ class Renderer_Base
     int m_framebuffer_width;                        // Width of the framebuffer
     int m_framebuffer_height;                       // Height of the framebuffer
     Vec3f m_background_color;                       // Background color of the framebuffer
-    std::vector<Sphere> m_spheres;                  // List of spheres that composes the scene's geometry
-    std::vector<Light> m_lights;                    // List of lights that composes the scene's lighting
+    Scene m_scene;                                  // Describes the scene's geometry and lighting
     std::vector<std::thread> m_loading_threads;     // List of threads to use to compute the output colors asynchronously
     std::mutex m_thread_guard;                      // Thread guard used to prevent concurrent writing to the stored output values
     volatile std::atomic<int> m_last_loaded_row;    // Index of the last row that has been handled by a loading thread

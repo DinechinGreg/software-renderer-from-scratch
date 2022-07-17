@@ -198,6 +198,7 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
     <ClInclude Include="src\dll_defines.h" />
     <ClInclude Include="src\filesystem\resource_manager.h" />
     <ClInclude Include="src\graphics\camera.h" />
+    <ClInclude Include="src\graphics\scene.h" />
     <ClInclude Include="src\graphics\light.h" />
     <ClInclude Include="src\graphics\material.h" />
     <ClInclude Include="src\graphics\physically_based_rendering.h" />
@@ -227,6 +228,7 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
     <ClCompile Include="src\graphics\renderer\renderer_opengl.cpp" />
     <ClCompile Include="src\graphics\renderer\renderer_to_file.cpp" />
     <ClCompile Include="src\graphics\renderer\shader_manager_opengl.cpp" />
+    <ClCompile Include="src\graphics\scene.cpp" />
     <ClCompile Include="src\graphics\sphere.cpp" />
     <ClCompile Include="src\graphics\transform.cpp" />
     <ClCompile Include="src\pch.cpp">
