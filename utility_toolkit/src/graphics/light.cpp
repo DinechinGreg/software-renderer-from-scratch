@@ -1,7 +1,6 @@
 #include "light.h"
 
 #include <graphics/renderer/renderer.h>
-#include <math/geometry.h>
 #include <math/math.h>
 #include <math/vec.h>
 

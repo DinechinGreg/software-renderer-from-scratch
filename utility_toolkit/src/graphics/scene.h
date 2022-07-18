@@ -1,7 +1,7 @@
 #pragma once
 
 #include <graphics/light.h>
-#include <graphics/sphere.h>
+#include <graphics/object.h>
 
 #include <vector>
 
@@ -13,7 +13,7 @@ class Scene
     Scene(Scene const& other) = default;
     Scene& operator=(Scene const& other) = default;
 
-    std::vector<Sphere> const& get_objects() const { return m_objects; }
+    std::vector<Object> const& get_objects() const { return m_objects; }
     std::vector<Light> const& get_lights() const { return m_lights; }
 
     /**
@@ -22,6 +22,6 @@ class Scene
     void setup_default_scene();
 
   private:
-    std::vector<Sphere> m_objects; // List of objects that compose the scene's geometry
+    std::vector<Object> m_objects; // List of objects that compose the scene's geometry
     std::vector<Light> m_lights;   // List of lights that compose the scene's lighting
 };

@@ -1,9 +1,10 @@
 #pragma once
 
+#include <geometry/ray.h>
 #include <graphics/camera.h>
 #include <graphics/light.h>
+#include <graphics/object.h>
 #include <graphics/scene.h>
-#include <graphics/sphere.h>
 #include <math/vec.h>
 
 #include <dll_defines.h>
@@ -41,36 +42,34 @@ class Renderer_Base
     DECLSPECIFIER virtual void release();
 
     /**
-     * @brief Computes the closest intersection between the ray and an element of the scene's geometry.
-     * @param[in] origin. Origin of the ray.
-     * @param[in] direction. Direction of the ray, as a unit vector.
+     * @brief Computes the closest intersection between the given ray and an element of the scene's geometry.
+     * @param[in] ray. Ray, with origin and direction.
      * @param[in] near_limit. Near intersection distance, at which to start looking for intersections.
      * @param[in] far_limit. Far intersection distance, at which to stop looking for intersections.
      * @return A pair of values, containing a pointer to the intersected element and the distance separating the intersection from the ray's origin.
      */
-    DECLSPECIFIER std::pair<Sphere const*, float> compute_closest_sphere_intersection(Vec3f const& origin, Unit_Vec3f const& direction, float near_limit, float far_limit) const;
+    DECLSPECIFIER std::pair<Object const*, float> compute_closest_intersection_with_scene(geometry::Ray const& ray, float near_limit, float far_limit) const;
 
     /**
      * @brief Checks whether the given ray intersects any element of the scene's geometry.
-     * @param[in] origin. Origin of the ray.
-     * @param[in] direction. Direction of the ray, as a unit vector.
+     * @param[in] ray. Ray, with origin and direction.
      * @param[in] near_limit. Near intersection distance, at which to start looking for intersections.
      * @param[in] far_limit. Far intersection distance, at which to stop looking for intersections.
-     * @param[in] first_sphere_to_check. (Optional) Element of geometry which is expected to intersect with the ray, to check first.
+     * @param[in] first_element_to_check. (Optional) Element of geometry which is expected to intersect with the ray, to check first.
      * @return True if the ray intersects with an element, false otherwise.
      */
-    DECLSPECIFIER bool intersects_any_sphere(Vec3f const& origin, Unit_Vec3f const& direction, float near_limit, float far_limit, Sphere const* first_sphere_to_check = nullptr) const;
+    DECLSPECIFIER bool intersects_any_object(geometry::Ray const& ray, float near_limit, float far_limit, Object const* first_element_to_check = nullptr) const;
 
     /**
      * @brief Computes the color obtained by intersecting the given ray with the scene's geometry.
-     * @param[in] origin. Origin of the ray.
+     * @param[in] ray. Ray, with origin and direction.
      * @param[in] direction. Direction of the ray, as a unit vector.
      * @param[in] near_limit. Near intersection distance, at which to start looking for intersections.
      * @param[in] far_limit. Far intersection distance, at which to stop looking for intersections.
      * @param[in] recursion_depth. Number of times we reflect the ray off the geometry to look for reflected colors.
      * @return The computed color.
      */
-    DECLSPECIFIER Vec3f const compute_color_from_ray(Vec3f const& origin, Unit_Vec3f const& direction, float near_limit, float far_limit, float recursion_depth) const;
+    DECLSPECIFIER Vec3f const compute_color_from_ray(geometry::Ray const& ray, float near_limit, float far_limit, float recursion_depth) const;
 
     /**
      * @brief Computes the color in the given pixel.

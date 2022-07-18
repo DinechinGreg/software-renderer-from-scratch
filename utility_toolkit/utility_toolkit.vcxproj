@@ -197,7 +197,11 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
   <ItemGroup>
     <ClInclude Include="src\dll_defines.h" />
     <ClInclude Include="src\filesystem\resource_manager.h" />
+    <ClInclude Include="src\geometry\primitive.h" />
+    <ClInclude Include="src\geometry\ray.h" />
+    <ClInclude Include="src\geometry\sphere.h" />
     <ClInclude Include="src\graphics\camera.h" />
+    <ClInclude Include="src\graphics\object.h" />
     <ClInclude Include="src\graphics\scene.h" />
     <ClInclude Include="src\graphics\light.h" />
     <ClInclude Include="src\graphics\material.h" />
@@ -209,10 +213,8 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
     <ClInclude Include="src\graphics\renderer\renderer_opengl.h" />
     <ClInclude Include="src\graphics\renderer\renderer_to_file.h" />
     <ClInclude Include="src\graphics\renderer\shader_manager_opengl.hpp" />
-    <ClInclude Include="src\graphics\sphere.h" />
     <ClInclude Include="src\graphics\texture.h" />
     <ClInclude Include="src\graphics\transform.h" />
-    <ClInclude Include="src\math\geometry.h" />
     <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\math\sorting.h" />
     <ClInclude Include="src\math\vec.h" />
@@ -221,6 +223,7 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\filesystem\resource_manager.cpp" />
+    <ClCompile Include="src\geometry\sphere.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\light.cpp" />
     <ClCompile Include="src\graphics\material.cpp" />
@@ -229,7 +232,6 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
     <ClCompile Include="src\graphics\renderer\renderer_to_file.cpp" />
     <ClCompile Include="src\graphics\renderer\shader_manager_opengl.cpp" />
     <ClCompile Include="src\graphics\scene.cpp" />
-    <ClCompile Include="src\graphics\sphere.cpp" />
     <ClCompile Include="src\graphics\transform.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

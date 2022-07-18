@@ -1,5 +1,6 @@
 #include "material.h"
 
+#include <geometry/ray.h>
 #include <graphics/renderer/renderer.h>
 
 Vec3f Material::apply_lighting_in_point(std::vector<Light> const& lights, Unit_Vec3f const& normal_direction, Vec3f const& camera_position, Vec3f const& point_position, float shadows_near_limit, Vec2f const& uv) const
@@ -28,7 +29,7 @@ Vec3f Material::apply_lighting_in_point(std::vector<Light> const& lights, Unit_V
         // Check for shadows: only compute light's contribution if it is not occluded
         auto const light_direction = light.compute_light_direction(point_position);
         auto const light_distance = light.compute_light_distance(point_position);
-        if (Renderer::get_instance().intersects_any_sphere(point_position, light_direction, shadows_near_limit, light_distance))
+        if (Renderer::get_instance().intersects_any_object(geometry::Ray{point_position, light_direction}, shadows_near_limit, light_distance))
             continue;
 
         // Compute relevant dot products
