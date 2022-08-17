@@ -25,7 +25,7 @@ Light::Light(Light_Type type, float intensity, Vec3f const& position_or_directio
     }
 }
 
-Unit_Vec3f Light::compute_light_direction(Vec3f const& point_position) const
+Unit_Vec3f Light::compute_point_to_light_direction(Vec3f const& point_position) const
 {
     if (m_type == Light_Type::point)
     {
@@ -39,7 +39,7 @@ Unit_Vec3f Light::compute_light_direction(Vec3f const& point_position) const
     return Vec3f::zero();
 }
 
-float Light::compute_light_distance(Vec3f const& point_position) const
+float Light::compute_point_to_light_distance(Vec3f const& point_position) const
 {
     if (m_type == Light_Type::point)
     {

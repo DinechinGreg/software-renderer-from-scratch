@@ -120,6 +120,12 @@
     <ClInclude Include="src\geometry\primitive.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="src\geometry\polygon.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\culling.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -162,6 +168,9 @@
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\geometry\sphere.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\geometry\ray.cpp">
       <Filter>Source Files\geometry</Filter>
     </ClCompile>
   </ItemGroup>

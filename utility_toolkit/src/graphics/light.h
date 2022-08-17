@@ -27,18 +27,18 @@ class Light : public Transform
     DECLSPECIFIER Vec3f const& get_color() const { return m_color; }
 
     /**
-     * @brief Computes the direction from the light to a given point, which depends on the light's type.
+     * @brief Computes the direction from a given point to the light, which depends on the light's type.
      * @param[in] point_position. Position of the point in which to compute lighting, resulting from an intersection between a ray and the scene's geometry.
-     * @return The light direction, as a unit vector.
+     * @return The point-to-light direction, as a unit vector.
      */
-    DECLSPECIFIER Unit_Vec3f compute_light_direction(Vec3f const& point_position) const;
+    DECLSPECIFIER Unit_Vec3f compute_point_to_light_direction(Vec3f const& point_position) const;
 
     /**
-     * @brief Computes the distance from the light to a given point, which depends on the light's type.
+     * @brief Computes the distance separating a given point from the light, which depends on the light's type.
      * @param[in] point_position. Position of the point in which to compute lighting, resulting from an intersection between a ray and the scene's geometry.
-     * @return The light distance.
+     * @return The point-to-light distance.
      */
-    DECLSPECIFIER float compute_light_distance(Vec3f const& point_position) const;
+    DECLSPECIFIER float compute_point_to_light_distance(Vec3f const& point_position) const;
 
     /**
      * @brief Computes the radiance of the light at a given distance.

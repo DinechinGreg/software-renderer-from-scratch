@@ -102,7 +102,7 @@ template <class T, unsigned N> class Vec
     Vec operator-() const { return operator*(static_cast<T>(-1)); }
     void operator+=(Vec const& other) { *this = operator+(other); }
     void operator*=(float const& other) { *this = operator*(other); }
-    T operator[](unsigned int i) const { return m_components[i]; }
+    T const& operator[](unsigned int i) const { return m_components[i]; }
 
     /**
      * @brief Computes the dot product between this vector and another.
@@ -235,6 +235,17 @@ template <class T, unsigned N> class Unit_Vec : public Vec<T, N>
      * @return The unit vector itself.
      */
     Unit_Vec normalize() const override { return (*this); }
+
+    /**
+     * @brief Gets a vector with the first component equal to one and all others equal to zero.
+     * @return The default unit vector.
+     */
+    static Unit_Vec const& reference()
+    {
+        static Unit_Vec ref{0};
+        ref.m_components[0] = 1;
+        return ref;
+    }
 };
 
 } // namespace math
@@ -258,3 +269,11 @@ using Vec3f = math::Vec<float, 3u>;
  * @brief Unit three-dimensional vector of floats.
  */
 using Unit_Vec3f = math::Unit_Vec<float, 3u>;
+
+namespace math
+{
+
+constexpr float z_direction_factor = -1.0f; // X right, Y top, Z forward
+static Vec3f cross(Vec3f a, Vec3f b) { return z_direction_factor * Vec3f{a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(), a.x() * b.y() - a.y() * b.x()}; }
+
+} // namespace math

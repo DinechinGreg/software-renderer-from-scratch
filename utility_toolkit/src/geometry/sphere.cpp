@@ -20,7 +20,7 @@ Vec2f Sphere::compute_uv_from_position_on_primitive(Vec3f const& position) const
     return Vec2f{u, v};
 }
 
-void Sphere::compute_intersection_with(Ray const& ray, std::vector<float>& out_intersections) const
+void Sphere::compute_intersection_with(Ray const& ray, culling::Type culling, std::vector<float>& out_intersections) const
 {
     // Compute the discriminant based on the parametric equations of ray and sphere
     auto const& ray_direction = ray.get_direction();
@@ -36,8 +36,10 @@ void Sphere::compute_intersection_with(Ray const& ray, std::vector<float>& out_i
     {
         float first = (-b - std::sqrt(discriminant)) / (2 * a);
         float second = (-b + std::sqrt(discriminant)) / (2 * a);
-        out_intersections.push_back(first);
-        out_intersections.push_back(second);
+        if (culling != culling::Type::FrontFace)
+            out_intersections.push_back(first);
+        if (culling != culling::Type::BackFace)
+            out_intersections.push_back(second);
     }
     // If it is equal to zero, there is only one (border case)
     else if (discriminant == 0)

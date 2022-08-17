@@ -2,6 +2,7 @@
 
 #include "ray.h"
 
+#include <graphics/culling.h>
 #include <math/vec.h>
 
 #include <vector>
@@ -31,13 +32,14 @@ class Primitive
      * @param[in] ray. Ray, with origin and direction.
      * @param[in] near_limit. Near limit, as a distance from the ray's origin, at which to start looking for intersections.
      * @param[in] far_limit. Far limit, as a distance from the ray's origin, at which to stop looking for intersections.
+     * @param[in] culling. Whether or not to cull front or back faces.
      * @param[out] out_intersections. Output intersection points, as distances from the ray's origin, within the given range (in order of distance if both are within the range).
      */
-    virtual void compute_intersection_with(Ray const& ray, float near_limit, float far_limit, std::vector<float>& out_intersections) const
+    virtual void compute_intersection_with(Ray const& ray, float near_limit, float far_limit, culling::Type culling, std::vector<float>& out_intersections) const
     {
         // Compute the intersections and store them in the member variable
         out_intersections.clear();
-        compute_intersection_with(ray, out_intersections);
+        compute_intersection_with(ray, culling, out_intersections);
         // Remove intersections outside of the given range
         auto i = 0;
         while (i < out_intersections.size())
@@ -54,9 +56,10 @@ class Primitive
      * @brief Computes the intersection between this primitive and a given ray.
      * Computed intersection points are stored in the member variable, as distances from the ray's origin, within the given range (in order of distance if both are within the range).
      * @param[in] ray. Ray, with origin and direction.
+     * @param[in] culling. Whether or not to cull front or back faces.
      * @param[out] out_intersections. Output intersection points, as distances from the ray's origin, within the given range (in order of distance if both are within the range).
      */
-    virtual void compute_intersection_with(Ray const& ray, std::vector<float>& out_intersections) const = 0;
+    virtual void compute_intersection_with(Ray const& ray, culling::Type culling, std::vector<float>& out_intersections) const = 0;
 };
 
 } // namespace geometry

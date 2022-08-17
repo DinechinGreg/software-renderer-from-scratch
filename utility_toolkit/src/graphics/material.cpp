@@ -27,20 +27,20 @@ Vec3f Material::apply_lighting_in_point(std::vector<Light> const& lights, Unit_V
         }
 
         // Check for shadows: only compute light's contribution if it is not occluded
-        auto const light_direction = light.compute_light_direction(point_position);
-        auto const light_distance = light.compute_light_distance(point_position);
-        if (Renderer::get_instance().intersects_any_object(geometry::Ray{point_position, light_direction}, shadows_near_limit, light_distance))
+        auto const point_to_light_direction = light.compute_point_to_light_direction(point_position);
+        auto const point_to_light_distance = light.compute_point_to_light_distance(point_position);
+        if (Renderer::get_instance().intersects_any_object(geometry::Ray{point_position, point_to_light_direction}, shadows_near_limit, point_to_light_distance, true))
             continue;
 
         // Compute relevant dot products
-        auto const halfway_direction = (view_direction + light_direction).normalize();
+        auto const halfway_direction = (view_direction + point_to_light_direction).normalize();
         brdf_input.h_dot_v = (std::max)(halfway_direction.dot(view_direction), 0.0f);
         brdf_input.n_dot_h = (std::max)(normal_direction.dot(halfway_direction), 0.0f);
         brdf_input.n_dot_v = (std::max)(normal_direction.dot(view_direction), 0.0f);
-        brdf_input.n_dot_l = (std::max)(normal_direction.dot(light_direction), 0.0f);
+        brdf_input.n_dot_l = (std::max)(normal_direction.dot(point_to_light_direction), 0.0f);
 
         // Compute the Cook-Torrance bidirectional reflectance distribution function and add it to the outgoing radiance
-        auto const incident_lighting = light.compute_radiance(light_distance) * brdf_input.n_dot_l;
+        auto const incident_lighting = light.compute_radiance(point_to_light_distance) * brdf_input.n_dot_l;
         auto const reflected_lighting = brdf_cook_torrance(brdf_input);
         outgoing_lighting += incident_lighting * reflected_lighting;
     }

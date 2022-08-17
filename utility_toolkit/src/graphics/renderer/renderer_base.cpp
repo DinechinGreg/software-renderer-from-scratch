@@ -17,6 +17,7 @@ Renderer_Base::Renderer_Base()
     , m_framebuffer_height{0}
     , m_background_color{Vec3f::zero()}
     , m_scene{}
+    , m_culling_type{culling::Type::BackFace}
     , m_loading_threads{}
     , m_thread_guard{}
     , m_last_loaded_row{0}
@@ -46,7 +47,7 @@ std::pair<Object const*, float> Renderer_Base::compute_closest_intersection_with
     float closest_intersection = far_limit;
     for (auto const& object : m_scene.get_objects())
     {
-        object.get_primitive().compute_intersection_with(ray, near_limit, far_limit, intersections);
+        object.get_primitive().compute_intersection_with(ray, near_limit, far_limit, m_culling_type, intersections);
         if (intersections.size() > 0 && intersections[0] <= closest_intersection)
         {
             intersected_object = &object;
@@ -56,12 +57,13 @@ std::pair<Object const*, float> Renderer_Base::compute_closest_intersection_with
     return {intersected_object, closest_intersection};
 }
 
-bool Renderer_Base::intersects_any_object(geometry::Ray const& ray, float near_limit, float far_limit, Object const* first_element_to_check) const
+bool Renderer_Base::intersects_any_object(geometry::Ray const& ray, float near_limit, float far_limit, bool invert_culling, Object const* first_element_to_check) const
 {
+    auto const culling_type = (invert_culling ? culling::opposite(m_culling_type) : m_culling_type);
     std::vector<float> intersections;
     if (first_element_to_check != nullptr)
     {
-        first_element_to_check->get_primitive().compute_intersection_with(ray, near_limit, far_limit, intersections);
+        first_element_to_check->get_primitive().compute_intersection_with(ray, near_limit, far_limit, culling_type, intersections);
         if (intersections.size() > 0)
             return true;
     }
@@ -69,7 +71,7 @@ bool Renderer_Base::intersects_any_object(geometry::Ray const& ray, float near_l
     {
         if (first_element_to_check != nullptr && &object == first_element_to_check)
             continue;
-        object.get_primitive().compute_intersection_with(ray, near_limit, far_limit, intersections);
+        object.get_primitive().compute_intersection_with(ray, near_limit, far_limit, culling_type, intersections);
         if (intersections.size() > 0)
             return true;
     }

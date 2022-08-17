@@ -2,6 +2,7 @@
 
 #include <geometry/ray.h>
 #include <graphics/camera.h>
+#include <graphics/culling.h>
 #include <graphics/light.h>
 #include <graphics/object.h>
 #include <graphics/scene.h>
@@ -55,10 +56,11 @@ class Renderer_Base
      * @param[in] ray. Ray, with origin and direction.
      * @param[in] near_limit. Near intersection distance, at which to start looking for intersections.
      * @param[in] far_limit. Far intersection distance, at which to stop looking for intersections.
+     * @param[in] invert_culling. Whether or not to invert culling for this check.
      * @param[in] first_element_to_check. (Optional) Element of geometry which is expected to intersect with the ray, to check first.
      * @return True if the ray intersects with an element, false otherwise.
      */
-    DECLSPECIFIER bool intersects_any_object(geometry::Ray const& ray, float near_limit, float far_limit, Object const* first_element_to_check = nullptr) const;
+    DECLSPECIFIER bool intersects_any_object(geometry::Ray const& ray, float near_limit, float far_limit, bool invert_culling = false, Object const* first_element_to_check = nullptr) const;
 
     /**
      * @brief Computes the color obtained by intersecting the given ray with the scene's geometry.
@@ -101,6 +103,7 @@ class Renderer_Base
     int m_framebuffer_height;                       // Height of the framebuffer
     Vec3f m_background_color;                       // Background color of the framebuffer
     Scene m_scene;                                  // Describes the scene's geometry and lighting
+    culling::Type m_culling_type;                   // Whether to cull front or back faces
     std::vector<std::thread> m_loading_threads;     // List of threads to use to compute the output colors asynchronously
     std::mutex m_thread_guard;                      // Thread guard used to prevent concurrent writing to the stored output values
     volatile std::atomic<int> m_last_loaded_row;    // Index of the last row that has been handled by a loading thread

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <graphics/culling.h>
 #include <math/vec.h>
 
 namespace geometry
@@ -26,12 +27,16 @@ class Ray
      * @param[in] precomputed_dot. (Optional) Precomputed value of the dot product between incident ray and direction.
      * @return The reflected ray.
      */
-    Ray reflect(Unit_Vec3f const& around, float const* precomputed_dot = nullptr)
-    {
-        float dot = (precomputed_dot == nullptr) ? m_direction.dot(around) : *precomputed_dot;
-        Unit_Vec3f reflected_direction = 2.0f * dot * around - m_direction;
-        return Ray{m_origin, reflected_direction};
-    }
+    Ray reflect(Unit_Vec3f const& around, float const* precomputed_dot = nullptr) const;
+
+    /**
+     * @brief Computes the intersection between this ray and the given plane.
+     * @param[in] plane_normal. Normal of the plane.
+     * @param[in] plane_constant. Constant that determines the plane's position.
+     * @param[in] culling. Type of culling to apply to determine whether there is intersection with the plane.
+     * @return
+     */
+    float compute_intersection_with_plane(Unit_Vec3f const& plane_normal, float const plane_constant, culling::Type culling) const;
 
   private:
     Vec3f m_origin;         // Origin of the ray

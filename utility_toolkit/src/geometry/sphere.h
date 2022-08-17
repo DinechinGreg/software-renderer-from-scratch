@@ -24,7 +24,7 @@ class Sphere : public Primitive
 
     Unit_Vec3f compute_normal_from_position_on_primitive(Vec3f const& position) const override;
     Vec2f compute_uv_from_position_on_primitive(Vec3f const& position) const override;
-    void compute_intersection_with(Ray const& ray, std::vector<float>& out_intersections) const override;
+    void compute_intersection_with(Ray const& ray, culling::Type culling, std::vector<float>& out_intersections) const override;
 
   private:
     Vec3f m_origin; // Origin of the sphere

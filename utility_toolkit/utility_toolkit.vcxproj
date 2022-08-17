@@ -198,10 +198,12 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
     <ClInclude Include="src\dll_defines.h" />
     <ClInclude Include="src\filesystem\resource_manager.h" />
     <ClInclude Include="src\geometry\primitive.h" />
+    <ClInclude Include="src\geometry\polygon.h" />
     <ClInclude Include="src\geometry\ray.h" />
     <ClInclude Include="src\geometry\sphere.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\object.h" />
+    <ClInclude Include="src\graphics\renderer\culling.h" />
     <ClInclude Include="src\graphics\scene.h" />
     <ClInclude Include="src\graphics\light.h" />
     <ClInclude Include="src\graphics\material.h" />
@@ -223,6 +225,7 @@ copy /y "_build\utility_toolkit.dll" "..\raytracer\_build\utility_toolkit.dll"</
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\filesystem\resource_manager.cpp" />
+    <ClCompile Include="src\geometry\ray.cpp" />
     <ClCompile Include="src\geometry\sphere.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\light.cpp" />
