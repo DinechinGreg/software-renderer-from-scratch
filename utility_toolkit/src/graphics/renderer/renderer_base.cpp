@@ -100,7 +100,7 @@ Vec3f const Renderer_Base::compute_color_from_ray(geometry::Ray const& ray, floa
         // TODO : make this depend on the material's properties, as the reflective intensity is set arbitrarily for now
         if (recursion_depth > 0)
         {
-            auto const reflective_intensity = 0.2f;
+            auto const reflective_intensity = std::powf((1.0f - object_material.get_roughness(intersection_uv)), 5.0f);
             auto const& reflected_ray = geometry::Ray{intersection_position, -ray_direction}.reflect(intersection_normal);
             auto const& reflected_color = compute_color_from_ray(reflected_ray, math::distance_epsilon(intersection_distance, 2.0f), far_limit, recursion_depth - 1);
             return (1.0f - reflective_intensity) * local_color + reflective_intensity * reflected_color;
